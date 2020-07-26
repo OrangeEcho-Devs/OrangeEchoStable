@@ -17,8 +17,8 @@ module.exports = {
 			const checkmemberforroles = message.mentions.members.first()
 			if (checkmemberforroles.roles.cache.some(role => role.id === `${ModeratorRoleID}`)){respond('',`You can't perform that action on this user.`, message.channel);return;;return;}
       var reason = args.join(' ')
+      const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
       var reason = reason.replace(argarray[1], '')
-    const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
     const taggeduser = message.mentions.users.first().id
     const guild = message.guild
     const role = guild.roles.cache.find(role => role.id === `${MuteRoleID}`);
@@ -26,7 +26,19 @@ module.exports = {
       if(reason == ''){var reason = 'No reason provided.'}
    member.roles.remove(role);
     respond('🔈 Unmuted','<@'+ taggeduser +'> was unmuted.',message.channel);
-    unmuteaction(member, message.author.tag, reason)
+	const ModReportEmbed = new Discord.MessageEmbed()
+		ModReportEmbed.setColor('#10C891')
+		ModReportEmbed.setTitle('Unmute')
+		ModReportEmbed.setDescription(`Un-shuts up a user`)
+		ModReportEmbed.addFields(
+			{ name: 'Offender', value: `${member}`, inline: false },
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Reason', value: `${reason}`, inline: false }
+		)
+		ModReportEmbed.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const modlogchannel = client.channels.cache.get(`${ModLog}`);
+		modlogchannel.send(ModReportEmbed)
   }catch(error) {
     respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
     errorlog(error)

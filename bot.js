@@ -1,4 +1,4 @@
-//Start of keeping the bot connected on glitch (Delete this code if you're not using glitch)
+//Start of keeping the bot connected on glitch/repl.it (Delete this code if you're not using glitch)
 /*const http = require('http');
 const express = require('express');
 const app = express();
@@ -21,7 +21,7 @@ http.createServer(function (req, res) {
 
 //End
 const keep_alive = require('./keep_alive.js')
-const token = 'NzMyOTA0ODczNDMxMTM4NDA1.Xw7Y2g.ysh3kgMrHadgHK_49Gazry_l19o'
+//const token = 'nope'
 console.log('The bot is currently booting up. Please wait a moment.')
 fs = require('fs');
 Discord = require('discord.js');
@@ -35,7 +35,7 @@ client.modcommands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 const db = require('quick.db');
 const {
-	PREFIX = '>',
+	PREFIX = '*',
 	BotManagerRoleID,
 	OwnerID,
 	BotLog,
@@ -46,8 +46,8 @@ const {
 	EnableIncomingMailCommand,
 	DisableIncomingMailCommand,
 	BlacklistCommand,
+  highTrafficCommand,
 	WhitelistCommand,
-	highTrafficCommand,  
 	RequirePermissons, 
 	StaffRoleID,
 	NoPermReply, 
@@ -58,7 +58,7 @@ const {
 } = require('discord.js')
 
 version = '7.0.0 Beta'
-codename = 'Public Beta'
+codename = 'Stable'
 footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
 errorcount = 0
 var safemode = false
@@ -454,6 +454,7 @@ const args = message.content.slice((PREFIX+highTrafficCommand).length).split(/ +
 		}
 })
 //Modmail end
+//Unlock dev tools
 client.on('message', message => {
   if(!message.content.startsWith(PREFIX) || message.author.bot) return;
   const args = message.content.slice('>'.length).split(/ +/);
@@ -550,225 +551,6 @@ modaction = function (RanCommand, RanBy, RanIn, FullCommand){
 		const modlogchannel = client.channels.cache.get(`${ModLog}`);
 		modlogchannel.send(ModReportEmbed)
 }
-//Decancer
-decanceraction = function (userToDecancer, RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#98DCE8')
-		ModReportEmbed.setTitle('Decancer')
-		ModReportEmbed.setDescription(`Remove cancerous characters from nickname`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${userToDecancer}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `Remove cancerous characters from previous nickname`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Ban
-banaction = function (user, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#F01A1A')
-		ModReportEmbed.setTitle('Ban')
-		ModReportEmbed.setDescription(`Bans someone from the server`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${user}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-
-}
-//Purge
-purgeaction = function (RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#81D8D0')
-		ModReportEmbed.setTitle('Purge')
-		ModReportEmbed.setDescription(`Removes messages in bulk`)
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Preban
-prebanaction = function (userToPreBan, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#F20B8E')
-		ModReportEmbed.setTitle('Preban')
-		ModReportEmbed.setDescription(`Bans the user when they enter the server`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${userToPreBan}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Clearwarn
-clearwarnaction = function (userToClear, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#C2FFCA')
-		ModReportEmbed.setTitle('Clearwarn')
-		ModReportEmbed.setDescription(`Clears the punishment log from the user`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${userToClear}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Hide Channel
-hidechannelaction = function (RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#FFC2F7')
-		ModReportEmbed.setTitle('Hide channel')
-		ModReportEmbed.setDescription(`Hides a channel from everyone`)
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Kick
-kickaction = function (user, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#2859B8')
-		ModReportEmbed.setTitle('Kick')
-		ModReportEmbed.setDescription(`Gives the specified member the boot from the server.`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${user}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Lock Channel
-lockchannelaction = function (RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed();
-		ModReportEmbed.setColor('#FF4500');
-		ModReportEmbed.setTitle('Lockdown');
-		ModReportEmbed.setDescription(`Denys the Send Messages permission for all users.`);
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		);
-		ModReportEmbed.setTimestamp();
-  const ModLog = db.fetch(`ModlogID_${message.guild.id}`);
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-  console.log(modlogchannel);
-		modlogchannel.send(ModReportEmbed);
-};
-
-//Mute
-muteaction = function (RanBy, member, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#FF4500')
-		ModReportEmbed.setTitle('Mute')
-		ModReportEmbed.setDescription(`Shuts the specified user up`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${member}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Show channel
-showchannelaction = function (RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#81D8D0')
-		ModReportEmbed.setTitle('Show channel')
-		ModReportEmbed.setDescription(`Unhides a channel to all users`)
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Unlock channel
-unlockchannelaction = function (RanBy, RanIn){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#81D8D0')
-		ModReportEmbed.setTitle('Unlock channel')
-		ModReportEmbed.setDescription(`Regrants Send Messages permission to all users`)
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Unmute
-unmuteaction = function (member, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#10C891')
-		ModReportEmbed.setTitle('Unmute')
-		ModReportEmbed.setDescription(`Un-shuts up a user`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${member}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-
-//Warn
-warnaction = function (checkmemberforroles, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#FFFF00')
-		ModReportEmbed.setTitle('Warn')
-		ModReportEmbed.setDescription(`Warns a user`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${checkmemberforroles}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
-//Unban
-unbanaction = function (checkmemberforroles, RanBy, reason){
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#10C891')
-		ModReportEmbed.setTitle('Warn')
-		ModReportEmbed.setDescription(`Warns a user`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${checkmemberforroles}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-}
  errorlog = function (error){
 	errorcount = errorcount + 1
 	const ErrorReportEmbed = new Discord.MessageEmbed()
@@ -805,7 +587,13 @@ for (const file of allCommandFiles) {
 }
 
 //Command list
-getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands){
+getCommandList = async function(modCheck, botManagerCheck, userID, showMemberCommands, message){
+  const Discord = require('discord.js')
+  const bypass = db.fetch(`DevToolsStatus_${message.author.id}`)
+  if(bypass == 'true') {
+    var modCheck = true
+    var botManagerCheck = true
+  }
 	const findCommandListUser = fs.readdirSync('./commands').filter(file => file.startsWith('USER_'));
 	const findCommandListMod = fs.readdirSync('./commands').filter(file => file.startsWith('MOD_'));
 	const findCommandListBotManager = fs.readdirSync('./commands').filter(file => file.startsWith('BOTMANAGER_'));
@@ -1073,7 +861,7 @@ client.on('guildMemberAdd', member => {
 			console.error
 		}
     const guild = member.guild
-    const UserLog = db.fetch(`UserlogID_${message.guild.id}`)
+    const UserLog = db.fetch(`UserlogID_${guild.id}`)
 		const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 		const icon = member.user.displayAvatarURL()
 		if (!channel) return;
@@ -1136,15 +924,15 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
 
 
 //Member leave
-client.on('guildMemberRemove', (member, message) => {
+client.on('guildMemberRemove', member => {
 	if(safemode == true)return;
 	var today = new Date();
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
-  const UserLog = db.fetch(`UserlogID_${message.guild.id}`)
+  const guild = member.guild
+  const UserLog = db.fetch(`UserlogID_${guild.id}`)
 	const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
-	const guild = member.guild
 	const icon = member.user.displayAvatarURL({ dynamic: true })
 	if (!channel) return;
 	fs.appendFileSync('./logs/user.log', `${member.user.tag} (${member.id}) left at '${dateTime}'.\nAccount creation date: ${member.user.createdAt}\nCurrent guild user count: ${guild.memberCount}\n\n`)
@@ -1165,10 +953,72 @@ client.on('guildMemberRemove', (member, message) => {
 //Profanity filter
 client.on('message', message => {
   //Checks if profanity filter is enabled
-  const db = require('quick.db')
-  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`)
+  const db = require('quick.db');
+  try {
+  if(message.channel.type == 'dm') return;
+  if(message.author.bot) return;
+  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`);
+  } catch(error) {
+    db.set(`ProfanityFilterStatus_${message.guild.id}`, 
+    'true')
+    	//False positive section
+	const positive = require('./falsepositive.json');
+	var falsePositiveEditedMessage = message.toString().replace(/[^\w\s]/g, "").replace(/\_/g, "")
+	var fP = positive.filter(word => falsePositiveEditedMessage.toLowerCase().includes(word));
+	if(fP.length > 0) {
+		var noprofanity = 1
+		if(positive == `${positive}`) {
+			console.log('Someone swore-- wait never mind, they said '+fP+".")
+		}
+	}
+	if(noprofanity === 1){
+		var noprofanity = 0
+		return;
+	} else if(!noprofanity) {
+
+	//"Oi there's profanity in there" section
+	if(fs.existsSync('./safe_mode.flag'))return;
+	if(message.channel.type == 'dm')return;
+	const profanity = require('./profanity.json');
+	var editedMessage = message.toString().replace(/[^\w\s]/g, "").replace(/\_/g, "")
+	var blocked = profanity.filter(word => editedMessage.toLowerCase().includes(word));
+	var today = new Date();
+	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+	var dateTime = date+' '+time;
+	if (blocked.length > 0) {
+		if(blocked == `${blocked}`)
+			console.log(`${message.author.tag} tried to use profanity. Logged word: ${blocked}`);
+			message.delete()
+			const reason = message.content.replace(/$blocked/g, `**${blocked}**`)
+			warnModule = require('./commands/MOD_warn.js')
+      //Writes reason to files
+      const userid = message.author.id
+      const authorusername = client.user.tag
+      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nReason: ' + '(AUTOMOD) Profanity Filter' +'\n\n');
+      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername}: \nReason: '(AUTOMOD) Profanity Filter'\n\n`);
+			
+		const profanityEmbed = new Discord.MessageEmbed()
+		.setColor('#ff0000')
+		.setTitle('Profanity')
+		.addFields(
+			{ name: 'Author', value: message.author.tag + `\n(${message.author.id})`, inline: true },
+			{ name: 'Channel', value: message.channel.name, inline: true },
+			{ name: 'Message', value: reason, inline: false },
+		)
+		.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const channel = client.channels.cache.get(`${ModLog}`);
+		channel.send(profanityEmbed)
+			respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
+    message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
+  }
+		}
+  }
+
+  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`);
   if (result == 'false') {
-    return;
+    return console.log('Someone swore- wait never mind. Profanity Filter disabled.')
   } else {
 	//False positive section
 	const positive = require('./falsepositive.json');
@@ -1201,9 +1051,9 @@ client.on('message', message => {
 			message.delete()
 			const reason = message.content.replace(/$blocked/g, `**${blocked}**`)
 			warnModule = require('./commands/MOD_warn.js')
+      //Writes reason to files
       const userid = message.author.id
       const authorusername = client.user.tag
-      //Writes reason to files
       fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nReason: ' + '(AUTOMOD) Profanity Filter' +'\n\n');
       fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername}: \nReason: '(AUTOMOD) Profanity Filter'\n\n`);
 			
@@ -1219,32 +1069,10 @@ client.on('message', message => {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(profanityEmbed)
-			//respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
+			respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
+    message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
   }
 		}
-	}
-})
-
-//Sensitive topic filter
-client.on('message', message => {
-	if(safemode == true)return;
-	if(message.channel.type == 'dm')return;
-	const sensitive = require('./sensitive.json');
-	var editedMessage = message.content.replace(/\*/g, "bad")
-	var editedMessage = editedMessage.replace(/\_/g, "bad")
-	var blocked = sensitive.filter(word => editedMessage.toLowerCase().includes(word));
-	var today = new Date();
-	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-	var dateTime = date+' '+time;
-	if (blocked.length > 0) {
-		if(blocked == `${blocked}`)
-			console.log(`${message.author.tag} tried to talk about a sensitive topic. Logged word: ${blocked}`);
-			respond('',`<@${message.author.id}>, please don't talk about that here. A note has been logged.`, message.channel, 'FFFF00')
-    		const reason = message.content.replace(`${blocked}`, `**${blocked}**`)
-	    	fs.appendFileSync('./logs/' + message.author.id + '-warnings.log', 'Note\nContent: Talking about a sensitive topic (' + reason +')\n\n');
-    		fs.appendFileSync('./logs/' + message.author.id + '-modwarnings.log', 'Note issued by OrangeEcho Public Beta \nContent: Talking about a sensitive topic (' + message.content +')\n\n');
-			respond('Sensitive Topic Filter 🗣️',`Hey <@${message.author.id}>, please don't talk about this topic next time.\nYour message: ${reason}`, message.author)
 	}
 })
 
@@ -1336,7 +1164,7 @@ client.on('message', message => {
 })
 
 //Message edit
-client.on('messageUpdate', async (oldMessage, newMessage, message) => {
+client.on('messageUpdate', async (message, oldMessage, newMessage) => {
 	if(safemode == true)return;
 	if (oldMessage.author.bot)return;
 	var today = new Date();
@@ -1479,4 +1307,4 @@ function clean(text) {
 	  console.error('an error has occured', error);
 	  }}})
 //Login
-client.login(token);
+client.login(process.env.token);

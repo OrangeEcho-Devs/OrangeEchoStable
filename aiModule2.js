@@ -41,6 +41,11 @@ module.exports = {
 			returnFunction(`Oh no! Please check with your doctor!`)
 		} else if(input.includes('i feel sick')){
 			returnFunction(`Does the sickness have symptoms of COVID-19?\nIf yes, **PLEASE** check with your doctor!`)
+    } else if(input.includes('have feelings')){
+      returnFunction(`Uhhh, no? I don't have feelings...??`)
+      setTimeout(function(){
+        returnFunction(`boohoohoo, so sad because no one likes me...`)
+      }, 2500)
 		} else if(input == 'i am sad'){
 			returnFunction(`Oh no! :cry:`)
 		} else if(input == 'i am alone'){

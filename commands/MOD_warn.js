@@ -38,7 +38,19 @@ module.exports = {
       respond('⚠️','You have been warned due to: '+ reason, warnedperson)
       
       //Mod action event
-      warnaction(checkmemberforroles, message.author.tag, reason)
+	const ModReportEmbed = new Discord.MessageEmbed()
+		ModReportEmbed.setColor('#FFFF00')
+		ModReportEmbed.setTitle('Warn')
+		ModReportEmbed.setDescription(`Warns a user`)
+		ModReportEmbed.addFields(
+			{ name: 'Offender', value: `${checkmemberforroles}`, inline: false },
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Reason', value: `${reason}`, inline: false }
+		)
+		ModReportEmbed.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const modlogchannel = client.channels.cache.get(`${ModLog}`);
+		modlogchannel.send(ModReportEmbed)
     }catch(error) {
       respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
       errorlog(error)

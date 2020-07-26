@@ -31,7 +31,19 @@ module.exports = {
 			fs.appendFileSync('./logs/' + userID + '-modwarnings.log', 'Unban issued by '+ message.author.tag +'\nReason: ' + reason +'\n\n');
 			   
 			respond('Unban',userID+' was unbanned.\nReason: '+reason, message.channel)
-			unbanaction(user, message.author.tag, reason)
+	const ModReportEmbed = new Discord.MessageEmbed()
+		ModReportEmbed.setColor('#10C891')
+		ModReportEmbed.setTitle('Warn')
+		ModReportEmbed.setDescription(`Warns a user`)
+		ModReportEmbed.addFields(
+			{ name: 'Offender', value: `${checkmemberforroles}`, inline: false },
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Reason', value: `${reason}`, inline: false }
+		)
+		ModReportEmbed.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const modlogchannel = client.channels.cache.get(`${ModLog}`);
+		modlogchannel.send(ModReportEmbed)
 			message.guild.members.unban(userID)
         	}catch(error) {
 				respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)

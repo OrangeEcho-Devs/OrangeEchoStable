@@ -30,9 +30,21 @@ module.exports = {
 			respond('<:banhammer:713690855818657852> Ban','<@'+userid+'> was banned.\nReason: '+reason, message.channel)
 			message.channel.send('Banned. No more idiots fooling around in the server.')
 			message.channel.send('https://imgur.com/gallery/O3DHIA5')
-			respond('Banned','You were banned from the OrangeEcho server due to: '+ reason+'\n\nThis ban does not expire. ', user)
+			respond('Banned',`You were banned from the ${message.guild.name} server due to: `+ reason+'\n\nThis ban does not expire. ', user)
 			user.ban({reason: `Ban requested by ${message.author.tag} Reason: ${reason}`})
-			banaction(user, message.author.tag, reason)
+	const ModReportEmbed = new Discord.MessageEmbed()
+		ModReportEmbed.setColor('#F01A1A')
+		ModReportEmbed.setTitle('Ban')
+		ModReportEmbed.setDescription(`Bans someone from the server`)
+		ModReportEmbed.addFields(
+			{ name: 'Offender', value: `${user}`, inline: false },
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Reason', value: `${reason}`, inline: false }
+		)
+		ModReportEmbed.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const modlogchannel = client.channels.cache.get(`${ModLog}`);
+		modlogchannel.send(ModReportEmbed)
         	}catch(error) {
 				respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
 				errorlog(error)
