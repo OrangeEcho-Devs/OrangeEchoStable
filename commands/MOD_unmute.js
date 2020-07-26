@@ -1,0 +1,36 @@
+module.exports = {
+  name: 'unmute',
+  aliases: ['unquiet'],
+  description: 'Unmutes a user.',
+  usage: '<user>',
+  cooldown: 0,
+  mod:true,
+	execute(message, args, client) {
+    const Discord = require('discord.js');
+    
+    const fs = require('fs');
+    const db = require('quick.db')
+    const {MuteRoleID} = db.fetch(`MuteRoleID_${message.guild.id}`)
+    try {
+      if (message.author.id == message.mentions.members.first().id){respond('',`Since you can talk, you aren't muted isn't that obvious???.`, message.channel);return;}
+      const {ModeratorRoleID} = db.fetch(`ModeratorRoleID_${message.guild.id}`)
+			const checkmemberforroles = message.mentions.members.first()
+			if (checkmemberforroles.roles.cache.some(role => role.id === `${ModeratorRoleID}`)){respond('',`You can't perform that action on this user.`, message.channel);return;;return;}
+      var reason = args.join(' ')
+      var reason = reason.replace(argarray[1], '')
+    const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+    const taggeduser = message.mentions.users.first().id
+    const guild = message.guild
+    const role = guild.roles.cache.find(role => role.id === `${MuteRoleID}`);
+    const member = message.mentions.members.first();
+      if(reason == ''){var reason = 'No reason provided.'}
+   member.roles.remove(role);
+    respond('🔈 Unmuted','<@'+ taggeduser +'> was unmuted.',message.channel);
+    unmuteaction(member, message.author.tag, reason)
+  }catch(error) {
+    respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
+    errorlog(error)
+    // Your code broke (Leave untouched in most cases)
+    console.error('an error has occured', error);
+    }
+  }}
