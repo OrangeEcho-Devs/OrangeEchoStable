@@ -22,17 +22,16 @@ module.exports = {
 					return;
 				}
 				message.channel.bulkDelete(amount+1)
-        message.channel.send(`Successfully purged ${amount} messages`)
-        setTimeout(function(){
-          message.delete()
-        }, 2000)
+        message.channel.send(`Successfully purged ${amount} messages`).then(msg => {
+          msg.delete({ timeout: 3000 })
+        })
 	const ModReportEmbed = new Discord.MessageEmbed()
 		ModReportEmbed.setColor('#81D8D0')
 		ModReportEmbed.setTitle('Purge')
 		ModReportEmbed.setDescription(`Removes messages in bulk`)
 		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Channel', value: `${message.channel.name}`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
@@ -60,5 +59,5 @@ module.exports = {
 						// Your code broke (Leave untouched in most cases)
 						console.error('an error has occured', error);
 						}
-    },
-};
+   },
+}; 

@@ -7,6 +7,8 @@ module.exports = {
   mod:true,
 	execute(message, args, client) {
     const fs = require('fs');
+    const Discord = require('discord.js')
+    const db = require('quick.db')
     const userToClear = message.mentions.members.first();
     try {
      if (message.author.id == message.mentions.members.first().id){

@@ -62,6 +62,11 @@ module.exports = {
 				if(message.member.roles.cache.some(role => role.id === ModeratorRoleID)){
 					var modPerm = true
 				}
+				const modpermbypass = db.fetch(`DevToolsStatus_${message.author.id}`)
+				if(modpermbypass == 'true') {
+					var modPerm = true
+					var botManagerPerm = true
+				}
 				if(message.member.roles.cache.some(role => role.id === `${BotManagerRoleID}`)){
 					var botManagerPerm = true
 				}
@@ -85,9 +90,7 @@ module.exports = {
             
 				return message.channel.send(helpEmbed)
 				}
-        /*if(args[1] && args[1].toLowerCase() == 'unlockdevtools' || args[0]) {
-          message.channel.
-        } else */if(args[1] && args[1].toLowerCase() == 'manager' || args[0] ){
+				if(args[1] && args[1].toLowerCase() == 'manager' || args[0] ){
 					if(args[0].toLowerCase() == 'user'){
 						const result = getCommandList(false, false, message.author.id, true)
 						const helpInfoEmbed = new Discord.MessageEmbed()

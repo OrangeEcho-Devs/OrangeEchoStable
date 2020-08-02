@@ -57,7 +57,7 @@ const {
 	MessageEmbed
 } = require('discord.js')
 
-version = '7.0.0 Beta'
+version = '7.0.0 Dev Beta 3'
 codename = 'Stable'
 footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
 errorcount = 0
@@ -454,13 +454,68 @@ const args = message.content.slice((PREFIX+highTrafficCommand).length).split(/ +
 		}
 })
 //Modmail end
+//Unlock dev tools
+client.on('message', message => {
+  if(!message.content.startsWith(PREFIX) || message.author.bot) return;
+  const args = message.content.slice('>'.length).split(/ +/);
+  const command = args.shift().toLowerCase();
+  if(command === 'unlockdevtools') {
+	message.channel.send('You bitch, this is production, are you sure?! If so please enter the dev password.');
+    message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 30000}).then(collected => {
+	if(collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
+      if(collected.first().content.toLowerCase() !== 'orangeechodevs-576') {
+        message.channel.send('Wrong password, access is denied. Now get out before I contact the devs for trying to break into me')
+      } else if(collected.first().content.toLowerCase() == 'orangeechodevs-576'){
+		  var authorid = message.author.id
+		message.channel.send('Waiting for approval.')
+		db.set(`PSWDREQUEST`, message.channel.id)
+		db.set(`PSWDREQUESTUSER`, message.author.id)
+		const passwordrequestchannel = client.channels.cache.get('736815827160006776')
+		const passwordrequest = new Discord.MessageEmbed()
+			.setTitle('Password request')
+			.setDescription(`A password request was made by <@${authorid}>. Do you want to approve this request?`)
+			.setFooter(footertext)
+		passwordrequestchannel.send(passwordrequest);
+		passwordrequestchannel.awaitMessages(m => m.author.id == '475149822366580744', {max: 1, time: 30000}).then(collected => {
+			if(collected.first().content.toLowerCase() == 'y') {
+				const targetchannel = db.fetch(`PSWDREQUEST`)
+				const targetchannelsend = client.channels.cache.get(targetchannel)
+				if (message.author.id !== '475149822366580744') {
+					passwordrequestchannel.send('❌Access is denied. User requesting is not a bot dev.')
+					targetchannelsend.send('❌Your request was approved, but you aren\'t a bot dev, now get out before I contact the devs for trying to break into me')
+				} else if (message.author.id == '475149822366580744') {
+				passwordrequestchannel.send('✅Password request approved.')
+				db.set(`DevToolsStatus_${message.author.id}`, 'true')
+				targetchannelsend.send('✅Dev tools unlocked! Run *help and you\'d see the dev tools appear. This will last for 1 minute')
+				setTimeout(function(){
+					db.set(`DevToolsStatus_${message.author.id}`, 'false')
+					db.set(`PSWDREQUEST`, '')
+					db.set(`PSWDREQUESTUSER`, '')
+				}, 60000)
+				}
+			} else {
+				const targetchannel = db.fetch(`PSWDREQUEST`)
+				const targetchannelsend = client.channels.cache.get(targetchannel)
+				passwordrequestchannel.send('❌Password request denied.')
+				targetchannelsend.send('❌Password request denied by bot devs.')
+				
+			}
+		})
+		
+      }
+	}
+	})
+  }
+})
 //Press f command
 client.on("message", message => {
   if(!message.content.startsWith('') || message.author.bot) return;
   const args = message.content.slice(''.length).split(/ +/);
   const command = args.shift().toLowerCase();
+  let member = message.guild.member(message.author);
+  let nickname = member ? member.displayName : null;
   if (command === 'f'){
-    message.channel.send(`${message.author.username} has paid respect.`);
+    message.channel.send(`${nickname} has paid respect.`);
   }
 })
 
@@ -533,6 +588,7 @@ for (const file of allCommandFiles) {
 
 }
 
+//Command list
 //Command list
 getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands){
 	const findCommandListUser = fs.readdirSync('./commands').filter(file => file.startsWith('USER_'));
@@ -705,6 +761,8 @@ client.on('message', async message => {
   const ModeratorRoleID = db.fetch(`ModeratorRoleID_${message.guild.id}`)
 	//Mod command and no permission
 		if (command.mod && !message.member.roles.cache.some(role => role.id === `${ModeratorRoleID}`)) {
+			const result = db.fetch(`DevToolsStatus_${message.author.id}`)
+			if (result == 'true') return;
 			respond('🛑 Incorrect permissions',`<@${message.author.id}>, you don't seem to have the correct permissions to use this command or you can't run this command in this channel. Please try again later.`, message.channel)
 			return;
 	}
@@ -800,7 +858,7 @@ client.on('guildMemberAdd', member => {
 			console.error
 		}
     const guild = member.guild
-    const UserLog = db.fetch(`UserlogID_${guild.id}`)
+    const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
 		const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 		const icon = member.user.displayAvatarURL()
 		if (!channel) return;
@@ -870,7 +928,7 @@ client.on('guildMemberRemove', member => {
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
   const guild = member.guild
-  const UserLog = db.fetch(`UserlogID_${guild.id}`)
+  const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
 	const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 	const icon = member.user.displayAvatarURL({ dynamic: true })
 	if (!channel) return;
@@ -892,10 +950,72 @@ client.on('guildMemberRemove', member => {
 //Profanity filter
 client.on('message', message => {
   //Checks if profanity filter is enabled
-  const db = require('quick.db')
-  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`)
+  const db = require('quick.db');
+  try {
+  if(message.channel.type == 'dm') return;
+  if(message.author.bot) return;
+  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`);
+  } catch(error) {
+    db.set(`ProfanityFilterStatus_${message.guild.id}`, 
+    'true')
+    	//False positive section
+	const positive = require('./falsepositive.json');
+	var falsePositiveEditedMessage = message.toString().replace(/[^\w\s]/g, "").replace(/\_/g, "")
+	var fP = positive.filter(word => falsePositiveEditedMessage.toLowerCase().includes(word));
+	if(fP.length > 0) {
+		var noprofanity = 1
+		if(positive == `${positive}`) {
+			console.log('Someone swore-- wait never mind, they said '+fP+".")
+		}
+	}
+	if(noprofanity === 1){
+		var noprofanity = 0
+		return;
+	} else if(!noprofanity) {
+
+	//"Oi there's profanity in there" section
+	if(fs.existsSync('./safe_mode.flag'))return;
+	if(message.channel.type == 'dm')return;
+	const profanity = require('./profanity.json');
+	var editedMessage = message.toString().replace(/[^\w\s]/g, "").replace(/\_/g, "")
+	var blocked = profanity.filter(word => editedMessage.toLowerCase().includes(word));
+	var today = new Date();
+	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+	var dateTime = date+' '+time;
+	if (blocked.length > 0) {
+		if(blocked == `${blocked}`)
+			console.log(`${message.author.tag} tried to use profanity. Logged word: ${blocked}`);
+			message.delete()
+			const reason = message.content.replace(/$blocked/g, `**${blocked}**`)
+			warnModule = require('./commands/MOD_warn.js')
+      //Writes reason to files
+      const userid = message.author.id
+      const authorusername = client.user.tag
+      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nReason: ' + '(AUTOMOD) Profanity Filter' +'\n\n');
+      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername}: \nReason: '(AUTOMOD) Profanity Filter'\n\n`);
+			
+		const profanityEmbed = new Discord.MessageEmbed()
+		.setColor('#ff0000')
+		.setTitle('Profanity')
+		.addFields(
+			{ name: 'Author', value: message.author.tag + `\n(${message.author.id})`, inline: true },
+			{ name: 'Channel', value: message.channel.name, inline: true },
+			{ name: 'Message', value: reason, inline: false },
+		)
+		.setTimestamp()
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+		const channel = client.channels.cache.get(`${ModLog}`);
+		channel.send(profanityEmbed)
+			respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
+    message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
+  }
+		}
+  }
+
+  const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`);
   if (result == 'false') {
-    return;
+    return console.log('Someone swore- wait never mind. Profanity Filter disabled.')
   } else {
 	//False positive section
 	const positive = require('./falsepositive.json');
@@ -950,29 +1070,6 @@ client.on('message', message => {
     message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
   }
 		}
-	}
-})
-
-//Sensitive topic filter
-client.on('message', message => {
-	if(safemode == true)return;
-	if(message.channel.type == 'dm')return;
-	const sensitive = require('./sensitive.json');
-	var editedMessage = message.content.replace(/\*/g, "bad")
-	var editedMessage = editedMessage.replace(/\_/g, "bad")
-	var blocked = sensitive.filter(word => editedMessage.toLowerCase().includes(word));
-	var today = new Date();
-	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-	var dateTime = date+' '+time;
-	if (blocked.length > 0) {
-		if(blocked == `${blocked}`)
-			console.log(`${message.author.tag} tried to talk about a sensitive topic. Logged word: ${blocked}`);
-			respond('',`<@${message.author.id}>, please don't talk about that here. A note has been logged.`, message.channel, 'FFFF00')
-    		const reason = message.content.replace(`${blocked}`, `**${blocked}**`)
-	    	fs.appendFileSync('./logs/' + message.author.id + '-warnings.log', 'Note\nContent: Talking about a sensitive topic (' + reason +')\n\n');
-    		fs.appendFileSync('./logs/' + message.author.id + '-modwarnings.log', 'Note issued by OrangeEcho Public Beta \nContent: Talking about a sensitive topic (' + message.content +')\n\n');
-			respond('Sensitive Topic Filter 🗣️',`Hey <@${message.author.id}>, please don't talk about this topic next time.\nYour message: ${reason}`, message.author)
 	}
 })
 
@@ -1064,7 +1161,7 @@ client.on('message', message => {
 })
 
 //Message edit
-client.on('messageUpdate', async (message, oldMessage, newMessage) => {
+client.on('messageUpdate', async (oldMessage, newMessage) => {
 	if(safemode == true)return;
 	if (oldMessage.author.bot)return;
 	var today = new Date();
@@ -1086,7 +1183,7 @@ client.on('messageUpdate', async (message, oldMessage, newMessage) => {
 
 	)
 	.setTimestamp()
-  const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
+  const ModLog = db.fetch(`ModlogID_${newMessage.guild.id}`)
 	const channel = client.channels.cache.get(`${ModLog}`);
 	channel.send(MessageEditEmbed);
 

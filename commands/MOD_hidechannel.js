@@ -6,9 +6,10 @@ module.exports = {
   mod:true,
 	execute(message, args, client) {
 	const channel = message.channel
+  const MemberRoleID = db.fetch(`MemberRoleID_${message.guild.id}`)
+  const roletohide = message.guild.roles.cache.get(MemberRoleID)
     try {
-		channel.updateOverwrite(channel.guild.roles.BotFun, { VIEW_CHANNEL: false });
-    channel.updateOverwrite(channel.guild.roles.Community, { VIEW_CHANNEL: false });
+		channel.updateOverwrite(roletohide, { VIEW_CHANNEL: false });
 		respond('','<#'+message.channel+'> was hidden.',message.channel)
 	const ModReportEmbed = new Discord.MessageEmbed()
 		ModReportEmbed.setColor('#FFC2F7')

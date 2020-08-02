@@ -1,3 +1,4 @@
+[![Run on Repl.it](https://repl.it/badge/github/OrangeEcho-Devs/OrangeEchoStable)](https://repl.it/github/OrangeEcho-Devs/OrangeEchoStable)
 # OrangeEcho Stable
 A multi-purpose bot for the OrangeEcho Server. Sometimes sarcastic, and fun to play around with.
 Original Bot: Focus bot/Apple Mod made by Freshman Devs or Daniel C

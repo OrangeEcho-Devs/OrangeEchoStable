@@ -1,0 +1,8 @@
+
+database.sqlite
+json.sqlite
+logs/.DS_Store
+logs/116275390695079945-messages.log
+*.log
+logs/.DS_Store
+logs/idbanlist.txt

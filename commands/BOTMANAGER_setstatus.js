@@ -5,6 +5,7 @@ module.exports = {
   usage: '<text>',
   cooldown: 0,
   mod:true,
+  botmanager: true,
 	execute(message, args, client) {
     const Discord = require('discord.js');
     const fs = require('fs');
