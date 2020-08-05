@@ -1,2 +1,11 @@
 
 .DS_Store
+*.log
+models/index.js
+models/Music.js
+models/GenericVoiceCommand.js
+models/GenericSoundboardCommand.js
+models/GenericRedditCommand.js
+models/GenericMusicCommand.js
+models/GenericModerationCommand.js
+*.sqlite

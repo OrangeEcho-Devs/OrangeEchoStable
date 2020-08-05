@@ -37,18 +37,7 @@ module.exports = {
           }
         })
         respond('✏️','<@'+message.mentions.members.first().id + '> had their punishment log cleared.', message.channel)
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#C2FFCA')
-		ModReportEmbed.setTitle('Clearwarn')
-		ModReportEmbed.setDescription(`Clears the punishment log from the user`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${userToClear}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
+        clearwarnaction(userToClear, message.author.tag)
       }else{
         respond('❌', 'Unable to find punishment information for this user.', message.channel)
       }

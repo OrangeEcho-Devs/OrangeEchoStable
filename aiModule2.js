@@ -41,11 +41,6 @@ module.exports = {
 			returnFunction(`Oh no! Please check with your doctor!`)
 		} else if(input.includes('i feel sick')){
 			returnFunction(`Does the sickness have symptoms of COVID-19?\nIf yes, **PLEASE** check with your doctor!`)
-    } else if(input.includes('have feelings')){
-      returnFunction(`Uhhh, no? I don't have feelings...??`)
-      setTimeout(function(){
-        returnFunction(`boohoohoo, so sad because no one likes me...`)
-      }, 2500)
 		} else if(input == 'i am sad'){
 			returnFunction(`Oh no! :cry:`)
 		} else if(input == 'i am alone'){
@@ -75,7 +70,7 @@ module.exports = {
 		} else if(input == 'i think i have corona'){
 			returnFunction(`Oh no! Please check with your doctor!`)
 		} else if(input == 'isn\'t it 12am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 00) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -83,7 +78,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 1am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 01) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -91,7 +86,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 2am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 02) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -99,7 +94,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 3am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 03) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -107,7 +102,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 4am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 04) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -115,7 +110,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 12 am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 00) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -123,7 +118,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 1 am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 01) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -131,7 +126,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 2 am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 02) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -139,7 +134,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 3 am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 03) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -147,7 +142,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it 4 am for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 04) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)
@@ -155,7 +150,7 @@ module.exports = {
 				returnFunction(`Uh... no?`)
 			}
      	} else if(input == 'isn\'t it late for you') {
-		    var today = new Date();
+		    var today = new Date()
 			var hour = today.getHours()
 			if(hour == 0 && hour < 05) {
 				returnFunction(`Oh no! I want to sleep but repl.it is not letting me! HELP!`)

@@ -30,19 +30,7 @@ module.exports = {
 			respond('⬅️ Kick','<@'+user.id+'> was kicked from the server. Goodbye and good riddance!\nReason: '+auditreason, message.channel)
 			channel.send(':wave: Goodbye and good riddance!');
 			respond('⬅️ Kick','You have been kicked from the server. You may rejoin at anytime.\n\nReason for kick: '+auditreason, user)
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#2859B8')
-		ModReportEmbed.setTitle('Kick')
-		ModReportEmbed.setDescription(`Gives the specified member the boot from the server.`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${user}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
+			kickaction(user, message.author.tag, auditreason)
 			user.kick({reason: `${message.author.tag} | ${auditreason}`})
 		}catch(error) {
 			respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)

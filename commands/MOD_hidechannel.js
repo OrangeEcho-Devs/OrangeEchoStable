@@ -10,19 +10,7 @@ module.exports = {
 		channel.updateOverwrite(channel.guild.roles.BotFun, { VIEW_CHANNEL: false });
     channel.updateOverwrite(channel.guild.roles.Community, { VIEW_CHANNEL: false });
 		respond('','<#'+message.channel+'> was hidden.',message.channel)
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#FFC2F7')
-		ModReportEmbed.setTitle('Hide channel')
-		ModReportEmbed.setDescription(`Hides a channel from everyone`)
-		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-
+		hidechannelaction(message.author.tag, message.channel.name)
 	}catch(error) {
 		respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
 		errorlog(error)

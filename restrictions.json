@@ -6,9 +6,7 @@
     },
     {
         "_comment":"Disable commands.",
-        "githubPull": true,
-        "lockChannel": true,
-        "unlockChannel": true
+        "githubPull": true
     },
     {
         "_comment":"Essential commands.",

@@ -32,19 +32,7 @@ module.exports = {
      respond('🔇 Muted',mentionedmember+' was muted.', message.channel);
       fs.appendFileSync('./logs/' + taggeduser + '-warnings.log', 'Mute\nReason: ' + reason +'\n\n');
       fs.appendFileSync('./logs/' + taggeduser + '-modwarnings.log', 'Mute issued by '+ message.author.tag +'\nReason: ' + reason +'\n\n');
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#FF4500')
-		ModReportEmbed.setTitle('Mute')
-		ModReportEmbed.setDescription(`Shuts the specified user up`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${member}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
+      muteaction(member, message.author.tag, reason)
     }catch(error) {
       respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
       errorlog(error)

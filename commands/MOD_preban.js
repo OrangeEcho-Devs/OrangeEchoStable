@@ -32,7 +32,7 @@ module.exports = {
 			}
 			
 
-			fs.readFile(`./logs/SVRBAN_${message.guild.id}idbanlist.txt`, function(err, data){
+			fs.readFile('./logs/idbanlist.txt', function(err, data){
 				if(err)console.log(err);
 				if(data.toString().includes(idToBan)){
 					respond('Error', 'User is already on the pre-ban list. What are you doing??', message.channel)
@@ -45,25 +45,11 @@ module.exports = {
 					if(reason == ''){
 						var reason = 'No reason provided.'
 					}
-					fs.appendFileSync(`./logs/SVRBAN_${message.guild.id}idbanlist.txt`, `${userid}\n`);
+					fs.appendFileSync('./logs/idbanlist.txt', `${userid}\n`);
 					fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Ban\nReason: ' + reason +'\n\n');
 					fs.appendFileSync('./logs/' + userid + '-modwarnings.log', 'Ban issued by '+ authorusername +'\nReason: ' + reason +'\n\n');
 					respond('Preban',argarray[1]+' was prebanned.\nReason: '+reason, message.channel)
-	const ModReportEmbed = new Discord.MessageEmbed()
-		ModReportEmbed.setColor('#F20B8E')
-		ModReportEmbed.setTitle('Preban')
-		ModReportEmbed.setDescription(`Bans the user when they enter the server`)
-		ModReportEmbed.addFields(
-			{ name: 'Offender', value: `${userToPreBan}`, inline: false },
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Reason', value: `${reason}`, inline: false }
-		)
-		ModReportEmbed.setTimestamp()
-    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
-		const modlogchannel = client.channels.cache.get(`${ModLog}`);
-		modlogchannel.send(ModReportEmbed)
-
-
+					prebanaction(userToPreBan, message.author.tag, reason)
 				}
 			})
 			

@@ -1,18 +1,28 @@
 OrangeEcho News
+**botOS 7.0.0 has been released!**
+-Redesigned help command
+-Fixed Message Edit showing "undefined" as new message
+-New `*declineorder` commands for deliverymen
+To apply to become a deliveryman, please DM Orange Group#5362
+
+
+**botOS 7.0.0 Dev Beta 3 has been released!**
+-Member joins and leaves logging _should_ work now
+-You can now order food in the bot (use `*order [food]` ) and a real human will respond to your request by delivering the food to you!
+-Added `*bigbrain [user]` command
+
+
+**botOS 7.0.0 Dev Beta 2 has been released!**
+Mod actions:
+-"Audit log not found" error fixed
+-Profanity filter not working fixed
+-Message delete embeds not showing up fixed
+
+
+**botOS 7.0.0 Dev Beta 1 has been released!**
+(Too long, if you'd like these set of release notes contact the bot devs instead)
 **botOS 6.4.0 has been released!**
 New features:
 Poll feature
 Urban dictionary feature (finally we managed to do it)
 New aiModule (3)
-
-**botOS 6.3.4 has been released!**
-New features:
-AI repeating itself more than once bug is fixed
-New MrsMajor 3.0 keygen look (more reliable too!) [*mm3.0key]
-Added some more stuff to the AI
-
-**Version 6.0.0 has been released!**
-New features:
-The bot has an AI now! Simply ping the bot and type the message next to it! Eg "@OrangeEcho Stable [message]"
-Bot cannot send emojis problem has been fixed!
-Certain improvements like recreating the text has been rolled out.
