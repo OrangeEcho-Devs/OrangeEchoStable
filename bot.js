@@ -21,7 +21,7 @@ http.createServer(function (req, res) {
 
 //End
 const keep_alive = require('./keep_alive.js')
-const token = 'NzMyOTA0ODczNDMxMTM4NDA1.Xw7Y2g.1Yc8j5MzcCE7DTvndNeeE0Pjmbk'
+const token = 'NzMyOTA0ODczNDMxMTM4NDA1.Xw7Y2g.1Yc8j5MzcCE7DTvndNeeE0Pjmbk' //don't worry, this doesn't work anyway
 console.log('The bot is currently booting up. Please wait a moment.')
 fs = require('fs');
 Discord = require('discord.js');
