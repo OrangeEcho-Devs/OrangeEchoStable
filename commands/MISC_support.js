@@ -1,7 +1,7 @@
 module.exports = {
     name: 'support',
-    aliases: ['supportserver', 'ripoff'],
-    description: 'Robs a user.',
+    aliases: ['supportserver'],
+    description: 'Shows support command to users.',
     usage: '*rob [user]',
     cooldown: 0,
     mod:false,

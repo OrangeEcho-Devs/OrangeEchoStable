@@ -48,9 +48,13 @@ module.exports = {
 			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const modlogchannel = client.channels.cache.get(`${ModLog}`);
 		modlogchannel.send(ModReportEmbed)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
       }else{
         respond('❌', 'Unable to find punishment information for this user.', message.channel)
       }

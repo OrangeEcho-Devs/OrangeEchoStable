@@ -1,7 +1,7 @@
 module.exports = {
     name: 'bigbrain',
     aliases: ['howbigbrain'],
-    description: 'Sees how big the mentioned person\'s brain is.',
+    description: 'Sees how big your brain is.',
     usage: '*bigbrain [person]',
     cooldown: 0,
     mod:false,

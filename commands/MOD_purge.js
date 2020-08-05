@@ -34,9 +34,13 @@ module.exports = {
 			{ name: 'Channel', value: `${message.channel.name}`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const modlogchannel = client.channels.cache.get(`${ModLog}`);
 		modlogchannel.send(ModReportEmbed)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
 				return //Broken
 				/*console.log(argarray[2])
 				if(amount >= 70 && argarray[2] && argarray[2].includes('-override')){

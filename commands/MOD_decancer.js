@@ -25,9 +25,13 @@ module.exports = {
 			{ name: 'Reason', value: `Remove cancerous characters from previous nickname`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const modlogchannel = client.channels.cache.get(`${ModLog}`);
 		modlogchannel.send(ModReportEmbed)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
 		respond('Decancer',`${message.mentions.members.first()} had their nickname changed to \`${text}\`.`, message.channel)
 	}catch(error) {
 		respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)

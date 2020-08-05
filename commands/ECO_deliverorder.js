@@ -19,11 +19,13 @@ module.exports = {
         if(!args[0]) return message.channel.send('Please specify the order number to deliver the food to.')
         if(acceptedorderstatus !== 'true') return message.channel.send('The order wasn\'t even accepted and prepared, what are you doing???')
         message.channel.send('Do you want to include a note for the person who ordered the food? If no, type "-')
-        message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '30000'}).then(collected => {
+        const messageawait = await message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '15000'}).then(collected => {
             if(collected.first().content == collected.first().content) {
+                if(!messageawait) return message.channel.send('You didn\'t answer in time, what the heck?')
                 const note = collected.first().content
                 db.set(`NoteOrder${ordernumbertodeliver}`, note)
-                message.channel.send('Next, please choose an image to send and send an **EXTERNAL** link to the image. **__DO NOT__** upload your own image.').then(message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '30000'}).then(collected => {
+                message.channel.send('Next, please choose an image to send and send an **EXTERNAL** link to the image. **__DO NOT__** upload your own image.').then(message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '15000'}).then(collected => {
+                    if(!messageawait2) return message.channel.send('You didn\'t answer in time, what the heck?')
                     var image = collected.first().content
                     db.set(`ImageOrder${ordernumbertodeliver}`, image)
                     const channeltorename = client.channels.cache.get(channelid)
@@ -40,13 +42,13 @@ module.exports = {
             .addField('Ordered by', `<@${orderedby}>`, false)
             .addField('Delivery man', `<@${deliveryman}>`, false)
             .addField('Note', notefordelivery, false)
-            .addField('----------------------------------------------------------------------', '⠀', false)
+            .addField('--------------------------------------------------------------------------------', '⠀', false)
             .setImage(imagefordelivery)
         orderreceivechannel.send(previewembed);
         eco.AddToBalance(deliveryman, 100)
         orderreceivechannel.send(`Hey <@${deliveryman}>, thanks for completing the order! You just earned **100** coins!`)
         const todm = client.users.cache.get(orderedby)
-        todm.send(`Hello <@${orderedby}>, your order **${ordernumbertodeliver}** has just been delivered! Enjoy your meal!`)
+        todm.send(`Hello <@${orderedby}>, your order **${ordernumbertodeliver}** has just been delivered!`)
         const deliveryembed = new Discord.MessageEmbed()
             .setColor('#008000')
             .setTitle('Order delivered')
@@ -55,11 +57,11 @@ module.exports = {
             .addField('Order number', ordernumbertodeliver, false)
             .addField('Delivery man', `<@${deliveryman}>`, false)
             .addField('Note', notefordelivery, false)
-            .addField('----------------------------------------------------------------------', '⠀', false)
+            .addField('--------------------------------------------------------------------------------', '⠀', false)
             .setImage(imagefordelivery)
         todm.send(deliveryembed);
                 }))
             }
         })
-      }
     }
+}

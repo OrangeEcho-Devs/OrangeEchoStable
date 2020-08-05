@@ -21,12 +21,11 @@ module.exports = {
               db.set(`MadeOrder${ordernumber}`, message.author.id)
               const madeorder = db.fetch(`MadeOrder${ordernumber}`)
               message.channel.send('✅Order sent successfully! Please wait while your order is accepted and prepared.')
-              const mainguild = client.guilds.cache.get('666122742965207060')
-              mainguild.channels.create(`UNCLAIMED-Order${ordernumber}`)
+              message.guild.channels.create(`UNCLAIMED-Order${ordernumber}`)
               .then(channel => {
-                let category =  mainguild.channels.cache.find(c => c.name == 'Order food' && c.type == 'category')
-                const modrole2 = mainguild.roles.cache.find(role => role.name == 'Level 2 Mod')
-                const modrole3 = mainguild.roles.cache.find(role => role.name == 'Level 3 Senior Mod')
+                let category = message.guild.channels.cache.find(c => c.name == 'Order food' && c.type == 'category')
+                const modrole2 = message.guild.roles.cache.find(role => role.name == 'Level 2 Mod')
+                const modrole3 = message.guild.roles.cache.find(role => role.name == 'Level 3 Senior Mod')
                 channel.setParent(category.id)
                 db.set(`ChannelOrder${ordernumber}`, channel.id)
                 channel.updateOverwrite(channel.guild.roles.everyone, { VIEW_CHANNEL: false });
@@ -40,7 +39,7 @@ module.exports = {
                 .addField('Order number:', db.fetch(`NumberOfOrders`) ,false)
                 .addField('Ordered by:', `<@${madeorder}>`, false)
                 .addField('Order', toOrder, false)
-                .addField('Accepting orders', 'To accept orders, use `*acceptorder [order number]`\nTo decline orders, use `*declineorder [ordernumber]`', false)
+                .addField('Accepting orders', 'To accept orders, use `*acceptorder [order number]`', false)
                 .setFooter(footertext)
               orderreceivechannel.send(orderreceiveembed);
               })

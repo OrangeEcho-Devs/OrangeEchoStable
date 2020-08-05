@@ -1,9 +1,10 @@
 module.exports = {
     name: 'news',
     aliases: ['newsletter','changelog'],
-    description: 'Shows new features and more about OrangeEcho Public Beta',
+    description: 'Shows new features and more about OrangeEcho',
     usage: '',
-    cooldown: 5,
+    cooldown: 0,
+    mod:false,
       execute(message, args, client) {
       const Discord = require('discord.js');
       
@@ -14,7 +15,7 @@ module.exports = {
           console.error(err)
           const creditsembed = new Discord.MessageEmbed()
           .setColor('#0000ff')
-          .setTitle('Newsletter')
+          .setTitle('OrangeEcho News')
           .addFields(
                  
           )
@@ -25,13 +26,12 @@ module.exports = {
         }
         const memberinfoembed = new Discord.MessageEmbed()
         .setColor('#0000ff')
-        .setTitle('News')
-        .addFields(
-          { name: 'News', value: data, inline: false },
-        )
+        .setTitle('OrangeEcho News')
+        .setDescription(data)
         .setTimestamp()
         message.channel.send(memberinfoembed)
-      }) }catch(error) {
+      }) 
+        }catch(error) {
         respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
         errorlog(error)
         // Your code broke (Leave untouched in most cases)

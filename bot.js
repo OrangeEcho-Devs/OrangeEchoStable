@@ -57,7 +57,7 @@ const {
 	MessageEmbed
 } = require('discord.js')
 
-version = '7.0.0 Dev Beta 3'
+version = '7.0.0'
 codename = 'Stable'
 footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
 errorcount = 0
@@ -550,8 +550,12 @@ modaction = function (RanCommand, RanBy, RanIn, FullCommand){
 			{ name: 'Channel', value: `${RanIn}`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
+    try {
 		const modlogchannel = client.channels.cache.get(`${ModLog}`);
 		modlogchannel.send(ModReportEmbed)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
 }
  errorlog = function (error){
 	errorcount = errorcount + 1
@@ -589,11 +593,26 @@ for (const file of allCommandFiles) {
 }
 
 //Command list
-//Command list
-getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands){
+getCommandList = function(modCheck, botManagerCheck, ecoCheck, memeyCheck, gamesCheck, miscCheck, funCheck, configCheck, botStuffCheck, musicCheck, userID, showMemberCommands){
+	const findCommandListBotStuff = fs.readdirSync('./commands').filter(file => file.startsWith('BOTSTUFF_'));
+	const findCommandListEco = fs.readdirSync('./commands').filter(file => file.startsWith('ECO_'));
+	const findCommandListMemey = fs.readdirSync('./commands').filter(file => file.startsWith('MEME_'));
+	const findCommandListGames = fs.readdirSync('./commands').filter(file => file.startsWith('GAME_'));
+	const findCommandListMisc = fs.readdirSync('./commands').filter(file => file.startsWith('MISC_'));
+	const findCommandListMusic = fs.readdirSync('./commands').filter(file => file.startsWith('MUSIC_'));
+	const findCommandListFun = fs.readdirSync('./commands').filter(file => file.startsWith('FUN_'));
+	const findCommandListConfig = fs.readdirSync('./commands').filter(file => file.startsWith('CONFIG_'))
 	const findCommandListUser = fs.readdirSync('./commands').filter(file => file.startsWith('USER_'));
 	const findCommandListMod = fs.readdirSync('./commands').filter(file => file.startsWith('MOD_'));
 	const findCommandListBotManager = fs.readdirSync('./commands').filter(file => file.startsWith('BOTMANAGER_'));
+	const commandListBotStuff = [];
+	const commandListMusic = [];
+	const commandListGames = [];
+	const commandListMisc = [];
+	const commandListFun = [];
+	const commandListConfig = [];
+	const commandListMemey = [];
+	const commandListEco = [];
 	const commandListUser = [];
 	const commandListMod = [];
 	const commandListBotManager = [];
@@ -614,8 +633,143 @@ getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands)
 				}
 			}
 		}
-
 	}
+	if(botStuffCheck == true) {
+		for(const file of findCommandListBotStuff) {
+			const command = require(`./commands/${file}`);
+			commandListBotStuff.join(' ')
+			if(!command.hidden == true || safemode == true) {
+				if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+					commandListBotStuff.push(command.name)
+					console.log(command.name)
+				} else {
+					if(!safemode == true) {
+						commandListBotStuff.push(command.name)
+						console.log(command.name)
+					}
+				}
+			}
+		}
+	}
+	if(musicCheck == true) {
+		for(const file of findCommandListMusic) {
+			const command = require(`./commands/${file}`);
+			commandListMusic.join(' ')
+			if(!command.hidden == true || safemode == true) {
+				if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+					commandListMusic.push(command.name)
+					console.log(command.name)
+				} else {
+					if(!safemode == true) {
+						commandListMusic.push(command.name)
+						console.log(command.name)
+					}
+				}
+			}
+		}
+	}
+	if(configCheck == true) {
+	for (const file of findCommandListConfig) {
+		const command = require(`./commands/${file}`);
+		commandListConfig.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListConfig.push(command.name)
+				console.log(command.name)
+			} else {
+				if(!safemode == true) {
+					commandListConfig.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
+	if(ecoCheck == true) {
+	for (const file of findCommandListEco) {
+		const command = require(`./commands/${file}`);
+		commandListEco.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListEco.push(command.name)
+				console.log(command.name)
+			} else {
+				if(!safemode == true) {
+					commandListEco.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
+	if(funCheck == true) {
+	for (const file of findCommandListFun) {
+		const command = require(`./commands/${file}`);
+		commandListFun.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListFun.push(command.name)
+				console.log(command.name)
+			} else { 
+				if(!safemode == true) {
+					commandListFun.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
+	if(gamesCheck == true) {
+	for (const file of findCommandListGames) {
+		const command = require(`./commands/${file}`);
+		commandListGames.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListGames.push(command.name)
+				console.log(command.name)
+			} else {
+				if(!safemode == true) {
+					commandListGames.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
+	if(memeyCheck == true) {
+	for (const file of findCommandListMemey) {
+		const command = require(`./commands/${file}`);
+		commandListMemey.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListMemey.push(command.name)
+				console.log(command.name)
+			} else {
+				if(!safemode == true) {
+					commandListMemey.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
+	if(miscCheck == true) {
+	for (const file of findCommandListMisc) {
+		const command = require(`./commands/${file}`);
+		commandListMisc.join(' ')
+		if(!command.hidden == true || safemode == true) {
+			if(safemode == true && commandEssential && commandEssential[command.name] == true) {
+				commandListMisc.push(command.name)
+				console.log(command.name)
+			} else {
+				if(!safemode == true) {
+					commandListMisc.push(command.name)
+					console.log(command.name)
+				}
+			}
+		}
+	}
+}
 	if(modCheck == true){
 		for (const file of findCommandListMod) {
 		const command = require(`./commands/${file}`);
@@ -644,7 +798,8 @@ getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands)
 			}else{
 				if(!safemode == true){
 					commandListBotManager.push(command.name)
-					console.log(command.name)
+					console.log(command.name);
+					
 				}
 			}
 		}
@@ -659,16 +814,37 @@ getCommandList = function(modCheck, botManagerCheck, userID, showMemberCommands)
 		commandList.push(usercommandstring)
 		commandList.push(commandListUser)
 	}
-
+	if(botStuffCheck == true) {
+		commandList.push(commandListBotStuff)
+	}
+	if(musicCheck == true) {
+		commandList.push(commandListMusic)
+	}
+	if(ecoCheck == true) {
+		commandList.push(commandListEco)
+	}
+	if(memeyCheck == true) {
+		commandList.push(commandListMemey)
+	}
+	if(configCheck == true) {
+		commandList.push(commandListConfig)
+	}
+	if(funCheck == true) {
+		commandList.push(commandListFun)
+	}
+	if(gamesCheck == true) {
+		commandList.push(commandListGames)
+	}
+	if(miscCheck == true) {
+		commandList.push(commandListMisc)
+	}
 	if(modCheck == true){
-	commandList.push(modcommandstring)
-	commandList.push(commandListMod)
+		commandList.push(commandListMod)
 	}
 	if(botManagerCheck == true){
-		commandList.push(botmanagercommandstring)
 		commandList.push(commandListBotManager)
 	}
-	const newcommandlist = commandList.toString().replace(/,/g, '\n')
+	const newcommandlist = commandList.toString().replace(/,/g, ', ')
 	return newcommandlist
 }
 //Suggestion reactions
@@ -797,16 +973,29 @@ client.on('message', async message => {
 
 	//Normal
 	try {
+    //Checks if maintenance mode is enabled
+    const db = require('quick.db')
+    const status = db.fetch(`MaintenanceMode`)
+    if(status == 'true') {
+      if(message.member.roles.cache.some(role => role.id === BotManagerRoleID)) {
+        return command.execute(message, args, client, this);
+      }
+      const maintenanceembed = new Discord.MessageEmbed()
+      .setDescription('❌ Maintenance mode is enabled.')
+      message.channel.send(maintenanceembed);
+    } else {
       //Checks if bot banned
 	fs.readFile('./botbanned.txt', function(err, data){
 		const blacklistdata = data
 		if(data && data.toString().includes(message.author.id)){
 			message.channel.send('You\'re bot banned. This means that you are banned from using the bot. To appeal, fill up this form: https://forms.gle/qPRc98CW3aup9Jm38')
 			return;
+    
     } else {
       command.execute(message, args, client, this);
     }
-  }) 
+  })
+    }
 
 	} catch (error) {
 		console.error(error);
@@ -873,7 +1062,7 @@ client.on('guildMemberAdd', member => {
 		}
 
 		fs.appendFileSync('./logs/user.log', `${member.user.tag} (${member.id}) joined at '${dateTime}'.\nAccount creation date: ${member.user.createdAt}\nCurrent guild user count: ${guild.memberCount}\n\n`)
-		function welcomeEmbedUserLog(dateTime, channel, guild, icon, member, joinedbefore){
+		function welcomeEmbedUserLog(dateTime, guild, icon, member, joinedbefore){
 const MemberJoinEmbed = new Discord.MessageEmbed()
 		.setColor('#00FF00')
 		.setTitle('Member Join')
@@ -886,8 +1075,13 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
 			{ name: 'Server member count', value: `${guild.memberCount}`, inline: false },
 		)
 		.setTimestamp()
+    try {
+    const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`)
 		channel.send(MemberJoinEmbed)
-		}
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
+	}
 
 
 		if(AssignMemberRoleOnJoin == true){
@@ -901,7 +1095,7 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
 				return;
 			}
 			if(data.toString().includes(member.id)){
-				respond('Banned','You were banned from the OrangeEcho discord server. (PREBAN)', member)
+				respond('Banned',`You were banned from the ${member.guild.name} discord server. (PREBAN)`, member)
 				respond('Banned',`${member.tag} was banned from the server. (PREBAN)`, guild.channels.cache.get(UserLog))
 				member.ban({reason: 'Prebanned.'});
 			}
@@ -929,7 +1123,6 @@ client.on('guildMemberRemove', member => {
 	var dateTime = date+' '+time;
   const guild = member.guild
   const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
-	const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 	const icon = member.user.displayAvatarURL({ dynamic: true })
 	if (!channel) return;
 	fs.appendFileSync('./logs/user.log', `${member.user.tag} (${member.id}) left at '${dateTime}'.\nAccount creation date: ${member.user.createdAt}\nCurrent guild user count: ${guild.memberCount}\n\n`)
@@ -944,7 +1137,12 @@ client.on('guildMemberRemove', member => {
 		{ name: 'Server member count', value: `${guild.memberCount}`, inline: false },
 	)
 	.setTimestamp()
+  try {
+  const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 	channel.send(MemberLeaveEmbed)
+  } catch(error) {
+    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+  }
 });
 
 //Profanity filter
@@ -1004,11 +1202,15 @@ client.on('message', message => {
 			{ name: 'Message', value: reason, inline: false },
 		)
 		.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(profanityEmbed)
 			respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
     message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
   }
 		}
   }
@@ -1063,11 +1265,15 @@ client.on('message', message => {
 			{ name: 'Message', value: reason, inline: false },
 		)
 		.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(profanityEmbed)
 			respond('Profanity Filter 🗣️',`Hey <@${message.author.id}>, please watch your language next time. Punishment information was updated on your profile.\nYour message: ${reason}`, message.author)
     message.channel.send(`Hey <@${message.author.id}>, watch your language. A warning has been logged.`)
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
   }
 		}
 	}
@@ -1084,7 +1290,8 @@ client.on('messageDelete', async message => {
 	const deletionLog = fetchedLogs.entries.first();
 
 	// Let's perform a sanity check here and make sure we got *something*
-	if (!deletionLog) {  console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
+	if (!deletionLog) {
+  console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
 	const DeletionEmbed = new Discord.MessageEmbed()
 	.setColor('#ff0000')
 	.setTitle('Message Deleted')
@@ -1095,13 +1302,22 @@ client.on('messageDelete', async message => {
 		{ name: 'Message', value: message.content, inline: false },
 	)
 	.setTimestamp()
+  try {
   const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 	const channel = client.channels.cache.get(`${ModLog}`);
-	channel.send(DeletionEmbed)}
+	channel.send(DeletionEmbed)
+  } catch(error) {
+    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+  }
+  }
 
 	// We now grab the user object of the person who deleted the message
 	// Let us also grab the target of this action to double check things
+  try {
 	const { executor, target } = deletionLog;
+  } catch(error) {
+    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+  }
 
 
 	// And now we can update our output with a bit more information
@@ -1118,10 +1334,14 @@ client.on('messageDelete', async message => {
 			{ name: 'Message', value: message.content, inline: false },
 		)
 		.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(DeletionEmbed)
 		return;
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    }
 	}	else {
 		if (target.id === message.author.id) return;
 		console.log(`A message by ${message.author.tag} was deleted, but we don't know by who.`)
@@ -1135,10 +1355,14 @@ client.on('messageDelete', async message => {
 			{ name: 'Message', value: message.content, inline: false },
 		)
 		.setTimestamp()
+    try {
     const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(DeletionEmbed)
 		return;
+    } catch(error) {
+      message.channel.send('Oopsie doopsie, a bot error has occurred. \nError code: -2')
+    }
 	}
 });
 
@@ -1183,9 +1407,13 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 
 	)
 	.setTimestamp()
+  try {
   const ModLog = db.fetch(`ModlogID_${newMessage.guild.id}`)
 	const channel = client.channels.cache.get(`${ModLog}`);
 	channel.send(MessageEditEmbed);
+  } catch(error) {
+    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+  }
 
 })
 
