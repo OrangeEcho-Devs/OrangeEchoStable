@@ -12,7 +12,7 @@ module.exports = {
         const ytdl = require('ytdl-core')
         const voiceChannel = message.member.voice.channel
         const YouTubeAPI = require("simple-youtube-api");
-        const youtube = new YouTubeAPI('AIzaSyC6ZxVD0bs5N101mEaMyufSBb8PIazNtm4');
+        const youtube = new YouTubeAPI('NO KEY FOR U');
         /*search(args.join(' ')), function(err, res) {
             if(err) return message.channel.send('Something went wrong. Please try again or contact the bot devs.')
             let videos = res.slice(0, 10);
