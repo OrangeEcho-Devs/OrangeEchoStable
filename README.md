@@ -20,5 +20,4 @@ We added some stuff like an ordering system, some fun stuff and tweaked some res
 
 ## Support
 
-If you need any support, please join our Discord server. (Apple Explained server)
-https://discord.gg/rPAyzNs
+If you need any support, please join our Discord server. https://discord.gg/Mdyjzvf
