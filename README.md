@@ -1,4 +1,3 @@
-[![Run on Repl.it](https://repl.it/badge/github/OrangeEcho-Devs/OrangeEchoStable)](https://repl.it/github/OrangeEcho-Devs/OrangeEchoStable)
 # OrangeEcho Stable
 A multi-purpose bot for the OrangeEcho Server. Sometimes sarcastic, and fun to play around with.
 Original Bot: Focus bot/Apple Mod made by Freshman Devs or Daniel C
@@ -21,5 +20,6 @@ We added some stuff like Mcdonalds, some fun stuff and tweaked some responses to
 
 ## Support
 
-If you need any support, please join our Discord server. (Apple Explained server)
-https://discord.gg/rPAyzNs
+If you need any support, please join our Discord server.
+Our server: https://discord.gg/Mdyjzvf
+Apple Explained server (original bot owners): https://discord.gg/ZhKkEhh
