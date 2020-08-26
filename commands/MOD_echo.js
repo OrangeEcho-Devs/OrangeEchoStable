@@ -22,6 +22,14 @@ module.exports = {
       respond('Error', 'Please provide a message.', message.channel);
       return;
     }
+    if(argarray.includes('@everyone')) {
+      message.channel.send('HAHA you can\'t trick me into pinging everyone lmaoo')
+      return;
+    }
+    if(argarray.includes('@here')) {
+      message.channel.send('HAHA you can\'t trick me into pinging here lmaoo')
+      return;
+    }
     var text = args.join(' ');
     var text = text.replace(argarray[1], '')
 		message.delete()

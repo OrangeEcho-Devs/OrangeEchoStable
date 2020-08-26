@@ -19,7 +19,7 @@ module.exports = {
         db.set(`AcceptedOrder${ordernumbertoclaim}`, 'true')
         const channelid = db.fetch(`ChannelOrder${ordernumbertoclaim}`)
         const channeltorename = client.channels.cache.get(channelid)
-        channeltorename.setName(`ACCEPTED-Order${ordernumber}`)
+        channeltorename.setName(`ACCEPTED-Order${ordernumbertoclaim}`)
         const orderreceivechannel = client.channels.cache.get(channelid)
         const orderdm = client.users.cache.get(orderedby)
         const acceptedorder = new Discord.MessageEmbed()

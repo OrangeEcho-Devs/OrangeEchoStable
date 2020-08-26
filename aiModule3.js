@@ -41,6 +41,30 @@ module.exports = {
         returnFunction(`idk, go to apple’s website`);
       } else if (input == "volt") {
         returnFunction(`:eyes:`);
+      } else if (input == "fuck") {
+        returnFunction(`f*ck you for saying that`);
+      } else if (input == "fuck you") {
+        returnFunction(`f*ck you for saying that`);
+      } else if (input == "someone is susing at you") {
+        returnFunction(`:cold_sweat:`);
+      } else if (input == "hi human") {
+        returnFunction(`<:sus:739800468250689598>`);
+      } else if (input == "haha pinged you") {
+        returnFunction(`<a:7584_angryping:720607717307187320>`);
+      } else if (input == "bitch") {
+        returnFunction(`k`);
+        setTimeout(function(){
+          returnFunction(`whatever`)
+        }, 2000)
+      } else if (input == "bitchass") {
+        returnFunction(`k`);
+        setTimeout(function(){
+          returnFunction(`whatever`)
+        }, 2000)
+      } else if (input.includes("you are better than")) {
+        returnFunction(`thanks`);
+      } else if (input.includes("you are worse than")) {
+        returnFunction(`aww, give some feedback to Orange Group then about how to improve me :(`);
       } else if (input == "hey siri") {
         returnFunction(`...`)
         setTimeout(function(){

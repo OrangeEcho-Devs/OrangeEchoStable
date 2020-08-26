@@ -6,6 +6,7 @@ module.exports = {
   mod:true,
 	execute(message, args, client) {
 	const channel = message.channel
+  const db = require('quick.db')
   const MemberRoleID = db.fetch(`MemberRoleID_${message.guild.id}`)
   const roletohide = message.guild.roles.cache.get(MemberRoleID)
     try {
@@ -16,8 +17,8 @@ module.exports = {
 		ModReportEmbed.setTitle('Hide channel')
 		ModReportEmbed.setDescription(`Hides a channel from everyone`)
 		ModReportEmbed.addFields(
-			{ name: 'Responsible Moderator', value: `${RanBy}`, inline: false },
-			{ name: 'Channel', value: `${RanIn}`, inline: false }
+			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },
+			{ name: 'Channel', value: `${message.channel.name}`, inline: false }
 		)
 		ModReportEmbed.setTimestamp()
     try {

@@ -10,14 +10,14 @@ module.exports = {
     
     const fs = require('fs');
     const db = require('quick.db')
-    const {MuteRoleID} = db.fetch(`MuteRoleID_${message.guild.id}`)
+    const MuteRoleID = db.fetch(`MuteRoleID_${message.guild.id}`)
     try {
       if (message.author.id == message.mentions.members.first().id){respond('',`Since you can talk, you aren't muted isn't that obvious???.`, message.channel);return;}
       const {ModeratorRoleID} = db.fetch(`ModeratorRoleID_${message.guild.id}`)
 			const checkmemberforroles = message.mentions.members.first()
 			if (checkmemberforroles.roles.cache.some(role => role.id === `${ModeratorRoleID}`)){respond('',`You can't perform that action on this user.`, message.channel);return;;return;}
       var reason = args.join(' ')
-      const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+      const argarray = message.content.slice(`*`.length).trim().split(/ +/g);
       var reason = reason.replace(argarray[1], '')
     const taggeduser = message.mentions.users.first().id
     const guild = message.guild

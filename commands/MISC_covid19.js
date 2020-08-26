@@ -24,7 +24,7 @@ module.exports = {
             .addField('Recovered cases: ', recovered)
             .addField('Deaths: ', deaths)
             .setColor('RANDOM')
-            .setFooter(footertext)
+            .setFooter('Values shown may not be 100% accurate \n'+footertext)
             message.channel.send(allembed);
           })
         } else {
@@ -67,7 +67,7 @@ module.exports = {
             .addField('Recovered cases: ', recovered)
             .addField('Deaths: ', deaths)
             .setColor('RANDOM')
-            .setFooter(footertext)
+            .setFooter('Values shown may not be 100% accurate \n'+footertext)
             message.channel.send(countryembed);
           }).catch(e => {
             console.log(e)

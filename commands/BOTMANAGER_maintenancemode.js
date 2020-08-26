@@ -2,7 +2,6 @@ module.exports = {
   name: 'maintenancemode',
   aliases: ['maintenance'],
   description: 'Turns on/off maintenance mode.',
-  mod:true,
   botmanager:true,
   essential:true,
 	execute(message, args, client) {

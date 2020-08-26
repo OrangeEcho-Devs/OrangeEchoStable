@@ -7,6 +7,7 @@ module.exports = {
   mod:true,
 	execute(message, args, client) {
 	const channel = message.channel
+  const db = require('quick.db')
   const MemberRoleID = db.fetch(`MemberRoleID_${message.guild.id}`)
   const roletoshow = message.guild.roles.cache.get(MemberRoleID)
     try {

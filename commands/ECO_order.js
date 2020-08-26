@@ -9,7 +9,8 @@ module.exports = {
         const Discord = require('discord.js');
         const fs = require('fs');
         const toOrder = args.join(' ');
-        const db = require('quick.db')
+        const db = require('quick.db');
+        const mainguild = client.guilds.cache.get('666122742965207060')
         if(!args[0]) return message.channel.send('You can\'t send a blank order dummy, order something')
         message.channel.send(`Do you really want to order "${toOrder}"? (y/n)`)
         message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '15000'}).then(collected => {
@@ -21,12 +22,12 @@ module.exports = {
               db.set(`MadeOrder${ordernumber}`, message.author.id)
               const madeorder = db.fetch(`MadeOrder${ordernumber}`)
               message.channel.send('✅Order sent successfully! Please wait while your order is accepted and prepared.')
-              message.guild.channels.create(`UNCLAIMED-Order${ordernumber}`)
+              mainguild.channels.create(`UNCLAIMED-Order${ordernumber}`)
               .then(channel => {
-                let category = message.guild.channels.cache.find(c => c.name == 'Order food' && c.type == 'category')
-                const modrole2 = message.guild.roles.cache.find(role => role.name == 'Level 2 Mod')
-                const modrole3 = message.guild.roles.cache.find(role => role.name == 'Level 3 Senior Mod')
-                channel.setParent(category.id)
+                let category = mainguild.channels.cache.find(c => c.name == 'Order food' && c.type == 'category')
+                const modrole2 = mainguild.roles.cache.find(role => role.name == 'Level 2 Mod')
+                const modrole3 = mainguild.roles.cache.find(role => role.name == 'Level 3 Senior Mod')
+                channel.setParent('740902160111239229')
                 db.set(`ChannelOrder${ordernumber}`, channel.id)
                 channel.updateOverwrite(channel.guild.roles.everyone, { VIEW_CHANNEL: false });
                 channel.updateOverwrite(modrole2, {VIEW_CHANNEL: true, SEND_MESSAGES: true, READ_MESSAGE_HISTORY: true});
@@ -39,7 +40,7 @@ module.exports = {
                 .addField('Order number:', db.fetch(`NumberOfOrders`) ,false)
                 .addField('Ordered by:', `<@${madeorder}>`, false)
                 .addField('Order', toOrder, false)
-                .addField('Accepting orders', 'To accept orders, use `*acceptorder [order number]`', false)
+                .addField('Accepting orders', 'To accept orders, use `*acceptorder [order number]`\nTo decline orders, use `*declineorder [ordernumber]`', false)
                 .setFooter(footertext)
               orderreceivechannel.send(orderreceiveembed);
               })

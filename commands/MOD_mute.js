@@ -10,12 +10,11 @@ module.exports = {
     const Discord = require('discord.js');
     const db = require('quick.db')
     const fs = require('fs');
-    const {MuteRoleID} = db.fetch(`MuteRoleID_${message.guild.id}`)
+    const MuteRoleID = db.fetch(`MuteRoleID_${message.guild.id}`)
     try {
       if (message.author.id == message.mentions.members.first().id){respond('',`Are you REALLY gonna try and mute **YOURSELF**`, message.channel);return;}
       const {ModeratorRoleID} = require('../config.json');
       const checkmemberforroles = message.mentions.members.first()
-      if (checkmemberforroles.roles.cache.some(role => role.id === `${ModeratorRoleID}`)){respond('',`You can't perform that action on this user.`, message.channel);return;;return;}
       let reasonraw = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
       var reason = reasonraw.join(' ')
       var reason = reason.replace(args[2], '')

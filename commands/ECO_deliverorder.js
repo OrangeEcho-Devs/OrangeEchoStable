@@ -19,13 +19,12 @@ module.exports = {
         if(!args[0]) return message.channel.send('Please specify the order number to deliver the food to.')
         if(acceptedorderstatus !== 'true') return message.channel.send('The order wasn\'t even accepted and prepared, what are you doing???')
         message.channel.send('Do you want to include a note for the person who ordered the food? If no, type "-')
-        const messageawait = await message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '15000'}).then(collected => {
+        const messageawait = message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '30000'}).then(collected => {
             if(collected.first().content == collected.first().content) {
                 if(!messageawait) return message.channel.send('You didn\'t answer in time, what the heck?')
                 const note = collected.first().content
                 db.set(`NoteOrder${ordernumbertodeliver}`, note)
-                message.channel.send('Next, please choose an image to send and send an **EXTERNAL** link to the image. **__DO NOT__** upload your own image.').then(message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '15000'}).then(collected => {
-                    if(!messageawait2) return message.channel.send('You didn\'t answer in time, what the heck?')
+                message.channel.send('Next, please choose an image to send and send an **EXTERNAL** link to the image. **__DO NOT__** upload your own image.').then(message.channel.awaitMessages(m => m.author.id === message.author.id, {max: '1', time: '30000'}).then(collected => {
                     var image = collected.first().content
                     db.set(`ImageOrder${ordernumbertodeliver}`, image)
                     const channeltorename = client.channels.cache.get(channelid)

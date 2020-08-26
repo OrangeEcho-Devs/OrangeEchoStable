@@ -20,8 +20,65 @@ http.createServer(function (req, res) {
 }).listen(8080);
 
 //End
+//Updating the status page
+var http = require('http');
+ 
+// The following 4 are the actual values that pertain to your account and this specific metric.
+var apiKey = 'e5ca09c8-6e44-4b39-8d1a-554b56909c46';
+var pageId = 'jbhgnn8qfz55';
+var metricId = '09gd2klvgsy8';
+var apiBase = 'http://api.statuspage.io/v1';
+ 
+var url = apiBase + '/pages/' + pageId + '/metrics/' + metricId + '/data.json';
+var authHeader = { 'Authorization': 'OAuth ' + apiKey };
+var options = { method: 'POST', headers: authHeader };
+ 
+// Need at least 1 data point for every 5 minutes.
+// Submit random data for the whole day.
+var totalPoints = 60 / 5 * 24;
+var epochInSeconds = Math.floor(new Date() / 1000);
+ 
+// This function gets called every second.
+function submit(count) {
+  count = count + 1;
+ 
+  if(count > totalPoints) return;
+ 
+  var currentTimestamp = epochInSeconds - (count - 1) * 5 * 60;
+  var randomValue = Math.floor(Math.random() * 1000);
+ 
+  var data = {
+    timestamp: currentTimestamp,
+    value: randomValue,
+  };
+ 
+  var request = http.request(url, options, function (res) {
+    if (res.statusMessage === "Unauthorized") {
+      const genericError =
+        "Error encountered. Please ensure that your page code and authorization key are correct.";
+      return console.error(genericError);
+    }
+    res.on("data", function () {
+      console.log("Submitted point " + count + " of " + totalPoints);
+    });
+    res.on("end", function () {
+      setTimeout(function () {
+        submit(count);
+      }, 1000);
+    });
+    res.on("error", (error) => {
+      console.error(`Error caught: ${error.message}`);
+    });
+  });
+ 
+  request.end(JSON.stringify({ data: data }));
+}
+ 
+// Initial call to start submitting data.
+submit(0);
+//End of status page
 const keep_alive = require('./keep_alive.js')
-//const token = 'nope'
+const token = 'N o  t o k e n  f o r  y o u'
 console.log('The bot is currently booting up. Please wait a moment.')
 fs = require('fs');
 Discord = require('discord.js');
@@ -57,9 +114,8 @@ const {
 	MessageEmbed
 } = require('discord.js')
 
-version = '7.0.0'
+version = '7.0.2'
 codename = 'Stable'
-footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
 errorcount = 0
 var safemode = false
 
@@ -184,9 +240,10 @@ client.on('message', message => {
 	try{
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
+    return;
 		if (message.content.startsWith(DMCommand)) return;
 		const messagecontent = message.content;
-    const MessageLog = db.fetch(`Messagelog_${message.guild.id}`)
+    //const MessageLog = db.fetch(`Messagelog_${message.guild.id}`)
 		const channel = client.channels.cache.get(MessageLog);
 		if (message.content == ''){
 			message.channel.send('Do you expect me to send an empty message to the mods???');
@@ -454,6 +511,20 @@ const args = message.content.slice((PREFIX+highTrafficCommand).length).split(/ +
 		}
 })
 //Modmail end
+//Footer text
+client.on('message', message => {
+	try {
+	if(message.channel.type == 'dm') return;
+	const mod = db.fetch(`ModeratorRoleID_${message.guild.id}`)
+	if(mod == null) {
+		footertext = 'OrangeEcho is not activated, run *setup to activate \nbotOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
+	} else {
+		footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
+	}
+	}catch(error) {
+		footertext = 'OrangeEcho is not activated, run *setup to activate \nbotOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
+	}
+})
 //Unlock dev tools
 client.on('message', message => {
   if(!message.content.startsWith(PREFIX) || message.author.bot) return;
@@ -509,12 +580,21 @@ client.on('message', message => {
 })
 //Press f command
 client.on("message", message => {
+  if(message.channel.type == 'dm') return;
   if(!message.content.startsWith('') || message.author.bot) return;
   const args = message.content.slice(''.length).split(/ +/);
   const command = args.shift().toLowerCase();
   let member = message.guild.member(message.author);
   let nickname = member ? member.displayName : null;
-  if (command === 'f'){
+  if (message.content == 'f' || message.content == 'F'){
+  if(nickname == '@everyone') {
+    message.channel.send('HAHA you can\'t trick me into pinging everyone lmaoo')
+    return;
+  }
+  if(nickname == '@here') {
+    message.channel.send('HAHA you can\'t trick me into pinging here lmaoo')
+    return;
+  }
     message.channel.send(`${nickname} has paid respect.`);
   }
 })
@@ -533,9 +613,10 @@ guild.channels.cache.forEach((channel) => {
     const newserverembed = new Discord.MessageEmbed()
       .setDescription('Hello! Thanks for adding me to your server! My name is **OrangeEcho Stable** . \nStart by configuring me to better suit your server like telling me the modlog channels! To do that, run `*setup` . My prefix is `*` . \nCurrently the bot has only a few commands, but don\'t worry! There will soon be more. \nTo give suggestions for the bot, run `*suggestion [suggestion]` and the suggestion will be sent to the bot owners. \nCheck out our currency system too! It\'s currently simple, but don\'t worry! More will be added.')
       .addFields(
-        { name: 'Links', value: 'Support Server: https://discord.gg/jVqVKdV \nInvite: <https://discordapp.com/oauth2/authorize?client_id=714001186897788934&scope=bot&permissions=2146958847>'}
+        { name: 'Links', value: 'Support Server: https://discord.gg/Mdyjzvf \nInvite: <https://discordapp.com/oauth2/authorize?client_id=714001186897788934&scope=bot&permissions=2146958847>'}
       )
-    defaultChannel.send(newserverembed);
+	defaultChannel.send(newserverembed);
+	client.user.setPresence({ activity: { name: `in `+client.guilds.cache.size+ ` servers` }, type: 'WATCHING', status: 'idle' })
 })
 
 //Default modaction 
@@ -854,19 +935,6 @@ client.on("message", message=>{
 		message.react("👎");
 	}
 })
-//Shot on iPhone reactions
-client.on('message', message => {
-	if(safemode == true)return;
-	if (message.author.bot)return;
-        if (message.channel.id != '616472674406760448')return;
-        const content = message.content.toLowerCase();
-        if (message.attachments.size != '0'){
-          if (!content.includes(`iphone`)){respond('',`<@${message.author.id}>, please specify the iPhone used to shoot the picture.`, message.channel);message.delete();return;}else
-          {
-          message.react('❤️');
-          message.react('👍');
-        }}
-})
 //AI Modules
 client.on('message', message => {
 	if (fs.existsSync('./aiModule.js' && !fs.existsSync('./safe_mode.flag'))){
@@ -930,15 +998,25 @@ client.on('message', async message => {
 		return;
 	}
 	//Bot Manager (over mod)
+	if(command.botmanager == true && !message.member.roles.cache.some(role => role.id == BotManagerRoleID)) {
+		respond('❌ Bot Manager Command Only', 'This command can only be ran by the dev team.', message.channel)
+		return;
+	}
 	if(command.botmanager == true && message.member.roles.cache.some(role => role.id === `${BotManagerRoleID}`)){
+		if(message.content == PREFIX+'') return;
 		command.execute(message, args, client);
 		return;
 	}
   const ModeratorRoleID = db.fetch(`ModeratorRoleID_${message.guild.id}`)
 	//Mod command and no permission
 		if (command.mod && !message.member.roles.cache.some(role => role.id === `${ModeratorRoleID}`)) {
+			if(command.botmanager == true) {
+				respond('❌ Bot Manager Command Only', 'This command can only be ran by the dev team.', message.channel)
+				return;
+			}
 			const result = db.fetch(`DevToolsStatus_${message.author.id}`)
 			if (result == 'true') return;
+			if(message.content == PREFIX+'') return;
 			respond('🛑 Incorrect permissions',`<@${message.author.id}>, you don't seem to have the correct permissions to use this command or you can't run this command in this channel. Please try again later.`, message.channel)
 			return;
 	}
@@ -992,7 +1070,12 @@ client.on('message', async message => {
 			return;
     
     } else {
-      command.execute(message, args, client, this);
+	  command.execute(message, args, client, this);
+	  if(message.channel.type == 'dm') return;
+	  const mod = db.fetch(`ModeratorRoleID_${message.guild.id}`)
+	  if(mod == null) {
+		  message.channel.send('OrangeEcho is not activated. Please run `*setup` to activate.')
+	  }
     }
   })
     }
@@ -1068,7 +1151,7 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
 		.setTitle('Member Join')
 		.setThumbnail(`${icon}`)
 		.addFields(
-			{ name: 'Username', value: member.user.tag, inline: false },
+			{ name: 'Username', value: member.tag, inline: false },
 			{ name: 'Member ID', value: member.id, inline: false },
 			{ name: 'Account creation date', value: member.user.createdAt, inline: false },
 			{ name: 'Joined before?', value: joinedbefore, inline: false },
@@ -1079,7 +1162,7 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
     const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`)
 		channel.send(MemberJoinEmbed)
     } catch(error) {
-      message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+      console.log(error)
     }
 	}
 
@@ -1122,9 +1205,7 @@ client.on('guildMemberRemove', member => {
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
   const guild = member.guild
-  const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
 	const icon = member.user.displayAvatarURL({ dynamic: true })
-	if (!channel) return;
 	fs.appendFileSync('./logs/user.log', `${member.user.tag} (${member.id}) left at '${dateTime}'.\nAccount creation date: ${member.user.createdAt}\nCurrent guild user count: ${guild.memberCount}\n\n`)
 	const MemberLeaveEmbed = new Discord.MessageEmbed()
 	.setColor('#ff0000')
@@ -1138,10 +1219,11 @@ client.on('guildMemberRemove', member => {
 	)
 	.setTimestamp()
   try {
+  const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
   const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
 	channel.send(MemberLeaveEmbed)
   } catch(error) {
-    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    console.log(error)
   }
 });
 
@@ -1217,7 +1299,7 @@ client.on('message', message => {
 
   const result = db.fetch(`ProfanityFilterStatus_${message.guild.id}`);
   if (result == 'false') {
-    return console.log('Someone swore- wait never mind. Profanity Filter disabled.')
+    return;
   } else {
 	//False positive section
 	const positive = require('./falsepositive.json');
@@ -1237,6 +1319,9 @@ client.on('message', message => {
 	//"Oi there's profanity in there" section
 	if(fs.existsSync('./safe_mode.flag'))return;
 	if(message.channel.type == 'dm')return;
+  if(message.content.startsWith('https://')) return;
+  if(message.content.startsWith('http://')) return;
+  if(message.content.startsWith('www.')) return;
 	const profanity = require('./profanity.json');
 	var editedMessage = message.toString().replace(/[^\w\s]/g, "").replace(/\_/g, "")
 	var blocked = profanity.filter(word => editedMessage.toLowerCase().includes(word));
@@ -1308,16 +1393,13 @@ client.on('messageDelete', async message => {
 	channel.send(DeletionEmbed)
   } catch(error) {
     message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    console.log(error)
   }
   }
 
 	// We now grab the user object of the person who deleted the message
 	// Let us also grab the target of this action to double check things
-  try {
 	const { executor, target } = deletionLog;
-  } catch(error) {
-    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
-  }
 
 
 	// And now we can update our output with a bit more information
@@ -1335,12 +1417,13 @@ client.on('messageDelete', async message => {
 		)
 		.setTimestamp()
     try {
-    const ModLog = db.fetch(`ModlogID${message.guild.id}`)
+    const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
 		const channel = client.channels.cache.get(`${ModLog}`);
 		channel.send(DeletionEmbed)
 		return;
     } catch(error) {
       message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+      console.log(error)
     }
 	}	else {
 		if (target.id === message.author.id) return;
@@ -1362,6 +1445,7 @@ client.on('messageDelete', async message => {
 		return;
     } catch(error) {
       message.channel.send('Oopsie doopsie, a bot error has occurred. \nError code: -2')
+      console.log(error)
     }
 	}
 });
@@ -1385,9 +1469,10 @@ client.on('message', message => {
 })
 
 //Message edit
-client.on('messageUpdate', async (oldMessage, newMessage) => {
+client.on('messageUpdate', (oldMessage, newMessage) => {
 	if(safemode == true)return;
 	if (oldMessage.author.bot)return;
+  if(oldMessage == newMessage) return;
 	var today = new Date();
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -1457,6 +1542,7 @@ client.on('StartupPassed', () => {
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
+	var footertext = 'botOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
 	const StartupEmbed = new Discord.MessageEmbed()
 		.setColor('#00FF00')
 		.setTitle('Bot Started')
@@ -1532,4 +1618,4 @@ function clean(text) {
 	  console.error('an error has occured', error);
 	  }}})
 //Login
-client.login(process.env.token);
+client.login(token);

@@ -20,6 +20,7 @@ module.exports = {
             .setDescription(`**Definition:**\n*${res.definition}*\n\n**Example:**\n*${res.example}*`)
             .addField('Author', res.author, true)
             .addField('Rating', `**\`Upvotes: ${res.thumbsUp} | Downvotes: ${res.thumbsDown}\`**`)
+            .setFooter('May contain profanities \nUrban dictionary is not an alternative from a regular English dictionary, do not use it for formal stuff \n'+footertext)
 
         if (res.tags.length > 0 && res.tags.join(' ').length < 1024) {
             embed.addField('Tags', res.tags.join(', '), true)

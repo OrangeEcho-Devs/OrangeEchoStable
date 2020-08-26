@@ -11,9 +11,11 @@ module.exports = {
 	const fs = require('fs');
 	const channel = message.channel
 	const reason = args.join(' ')
+  const db = require('quick.db')
+  const MemberRoleID = db.fetch(`MemberRoleID_${message.guild.id}`)
     try {
-	member.roles.cache.some(role => role.name === 'BotFun');
-    channel.updateOverwrite(channel.guild.role, { SEND_MESSAGES: true });
+	message.member.roles.cache.some(role => role.name === 'BotFun');
+    channel.updateOverwrite(MemberRoleID, { SEND_MESSAGES: true });
 		if(args != ''){respond('🔓', `<#${message.channel.id}> was unlocked.\nReason: `+reason, message.channel)}
 		else{respond('🔓', `<#${message.channel.id}> was unlocked.`, message.channel)}
 	const ModReportEmbed = new Discord.MessageEmbed()
