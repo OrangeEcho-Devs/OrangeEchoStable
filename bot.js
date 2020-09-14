@@ -523,6 +523,7 @@ client.on('message', message => {
 	}
 	}catch(error) {
 		footertext = 'OrangeEcho is not activated, run *setup to activate \nbotOS '+ version +'\nCodename: '+ codename +'\nRemember to wash your hands regularly! \nStay safe during the COVID-19 period!'
+		fs.appendFileSync('./logs/errors.log', error+'\n')
 	}
 })
 //Unlock dev tools
@@ -999,11 +1000,14 @@ client.on('message', async message => {
 	}
 	//Bot Manager (over mod)
 	if(command.botmanager == true && !message.member.roles.cache.some(role => role.id == BotManagerRoleID)) {
+		if(message.content.startsWith(PREFIX+'')) return;
+		if(message.content.startsWith(PREFIX+' ')) return;
 		respond('❌ Bot Manager Command Only', 'This command can only be ran by the dev team.', message.channel)
 		return;
 	}
 	if(command.botmanager == true && message.member.roles.cache.some(role => role.id === `${BotManagerRoleID}`)){
-		if(message.content == PREFIX+'') return;
+		if(message.content.startsWith(PREFIX+'')) return;
+		if(message.content.startsWith(PREFIX+' ')) return;
 		command.execute(message, args, client);
 		return;
 	}
@@ -1011,12 +1015,15 @@ client.on('message', async message => {
 	//Mod command and no permission
 		if (command.mod && !message.member.roles.cache.some(role => role.id === `${ModeratorRoleID}`)) {
 			if(command.botmanager == true) {
+				if(message.content.startsWith(PREFIX+'')) return;
+				if(message.content.startsWith(PREFIX+' ')) return;
 				respond('❌ Bot Manager Command Only', 'This command can only be ran by the dev team.', message.channel)
 				return;
 			}
 			const result = db.fetch(`DevToolsStatus_${message.author.id}`)
 			if (result == 'true') return;
-			if(message.content == PREFIX+'') return;
+			if(message.content.startsWith(PREFIX+'')) return;
+			if(message.content.startsWith(PREFIX+' ')) return;
 			respond('🛑 Incorrect permissions',`<@${message.author.id}>, you don't seem to have the correct permissions to use this command or you can't run this command in this channel. Please try again later.`, message.channel)
 			return;
 	}
@@ -1116,7 +1123,7 @@ client.on('error', error => {
 
 //Member join
 client.on('guildMemberAdd', member => {
-	if(safemode == true)return;
+	if(fs.existsSync('./safe_mode.flag'))return;
 	var today = new Date();
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -1129,9 +1136,9 @@ client.on('guildMemberAdd', member => {
 			errorlog(err)
 			console.error
 		}
-    const guild = member.guild
-    const UserLog = db.fetch(`UserlogID_${member.guild.id}`)
-		const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`);
+		const guild = member.guild
+		const UserLog = db.fetch(`UserlogID_${guild.id}`)
+		const channel = client.channels.cache.get(UserLog)
 		const icon = member.user.displayAvatarURL()
 		if (!channel) return;
 			if(data.toString().includes(member.id)){
@@ -1143,46 +1150,43 @@ client.on('guildMemberAdd', member => {
 			console.log(joinedbefore)
 			welcomeEmbedUserLog(dateTime, channel, guild, icon, member, joinedbefore)
 		}
-
+		
 		fs.appendFileSync('./logs/user.log', `${member.user.tag} (${member.id}) joined at '${dateTime}'.\nAccount creation date: ${member.user.createdAt}\nCurrent guild user count: ${guild.memberCount}\n\n`)
-		function welcomeEmbedUserLog(dateTime, guild, icon, member, joinedbefore){
-const MemberJoinEmbed = new Discord.MessageEmbed()
+		
+		function welcomeEmbedUserLog(dateTime, channel, guild, icon, member, joinedbefore){
+        const MemberJoinEmbed = new Discord.MessageEmbed()
 		.setColor('#00FF00')
 		.setTitle('Member Join')
 		.setThumbnail(`${icon}`)
 		.addFields(
-			{ name: 'Username', value: member.tag, inline: false },
-			{ name: 'Member ID', value: member.id, inline: false },
-			{ name: 'Account creation date', value: member.user.createdAt, inline: false },
+			{ name: 'Member', value: `<@${member.id}>`, inline: false },
+			{ name: 'Username', value: member.user.tag, inline: false },
+			{ name: 'ID', value: member.id, inline: false },
 			{ name: 'Joined before?', value: joinedbefore, inline: false },
 			{ name: 'Server member count', value: `${guild.memberCount}`, inline: false },
+			{ name: 'Account creation', value: member.user.createdAt, inline: false },
 		)
 		.setTimestamp()
-    try {
-    const channel = member.guild.channels.cache.find(ch => ch.id === `${UserLog}`)
-		channel.send(MemberJoinEmbed)
-    } catch(error) {
-      console.log(error)
-    }
-	}
-
-
-		if(AssignMemberRoleOnJoin == true){
-			const role = member.guild.roles.cache.find(role => role.id === `${MemberRoleID}`);
-			member.roles.add(role);
+		try {
+		const channeltosend = client.channels.cache.get(UserLog)
+		channeltosend.send(MemberJoinEmbed)
+		}catch(error) {
+			console.log(error)
 		}
-		fs.readFile('./logs/idbanlist.txt', function(err, data){
-			if(err){
-				console.log(err);
-				errorlog(err)
-				return;
+	}
+	})
+			const guild = member.guild
+			if (fs.existsSync('./logs/idbanlist.txt')){
+			prebanList = require('./logs/idbanlist.txt')
+			
+			if(prebanList[member.id]){
+				respond('Banned',`You were banned from the Apple Explained server. (PREBAN)\n\nReason: ${prebanList[member.id]}`, member)
+				respond('Banned',`${member.user.tag} was banned from the server. (PREBAN)\nReason: ${prebanList[member.id]}`, guild.channels.cache.get(UserLog))
+				modaction('ban', client.user.tag, 'Automatic preban.', `Automatic preban. Reason: ${prebanList[member.id]}`)
+				member.ban({reason: `Prebanned. Reason: ${prebanList[member.id]}`});
 			}
-			if(data.toString().includes(member.id)){
-				respond('Banned',`You were banned from the ${member.guild.name} discord server. (PREBAN)`, member)
-				respond('Banned',`${member.tag} was banned from the server. (PREBAN)`, guild.channels.cache.get(UserLog))
-				member.ban({reason: 'Prebanned.'});
-			}
-		})
+			delete require.cache[require.resolve(`./logs/idbanlist.txt`)]
+		}
 		fs.readFile('./files/welcomemessage.txt', function(err, data){
 			const WelcomeEmbedDM = new Discord.MessageEmbed()
 			WelcomeEmbedDM.setTitle('Welcome! 👋')
@@ -1193,8 +1197,11 @@ const MemberJoinEmbed = new Discord.MessageEmbed()
 			}
 			member.send(WelcomeEmbedDM)
 		})
-	})
-});
+		if(AssignMemberRoleOnJoin == true){
+			const role = member.guild.roles.cache.find(role => role.id === `${MemberRoleID}`);
+			member.roles.add(role);
+		}
+	});
 
 
 //Member leave
@@ -1497,7 +1504,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	const channel = client.channels.cache.get(`${ModLog}`);
 	channel.send(MessageEditEmbed);
   } catch(error) {
-    message.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
+    oldMessage.channel.send('Oopsie doopsie, the bot ran into an error. \nError code: -2')
   }
 
 })
