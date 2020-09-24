@@ -27,7 +27,7 @@ module.exports = {
                 let category = mainguild.channels.cache.find(c => c.name == 'Order food' && c.type == 'category')
                 const modrole2 = mainguild.roles.cache.find(role => role.name == 'Level 2 Mod')
                 const modrole3 = mainguild.roles.cache.find(role => role.name == 'Level 3 Senior Mod')
-                channel.setParent('740902160111239229')
+                channel.setParent('743062184438923264')
                 db.set(`ChannelOrder${ordernumber}`, channel.id)
                 channel.updateOverwrite(channel.guild.roles.everyone, { VIEW_CHANNEL: false });
                 channel.updateOverwrite(modrole2, {VIEW_CHANNEL: true, SEND_MESSAGES: true, READ_MESSAGE_HISTORY: true});

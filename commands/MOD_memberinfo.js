@@ -8,9 +8,9 @@ module.exports = {
 	execute(message, args, client) {
     const Discord = require('discord.js');
     const fs = require('fs');
-    const userlog = require('../logs/userwarnings.json')
     try {
       const mentionedUser = message.mentions.users.first()
+      const userlog = require(`../logs/${mentionedUser.id}-modwarnings.json`)
       if(!mentionedUser){
         respond(``, `No member was mentioned. \nStare at me for what?? Go and rerun the command with the member mentioned this time!`, message.channel)
         return;

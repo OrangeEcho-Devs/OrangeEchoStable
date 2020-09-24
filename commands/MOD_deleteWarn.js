@@ -12,7 +12,7 @@ module.exports = {
 		}
 
 		if (!fs.existsSync(`./logs/userwarnings.json`)) {
-			respond('',`Error: userwarnings.json is not found. Are you stupid?? Get that file back`, message.channel)
+			respond('',`Error: userwarnings.json is not found.`, message.channel)
 			return;
 		}
 

@@ -30,6 +30,15 @@ module.exports = {
       message.channel.send('HAHA you can\'t trick me into pinging here lmaoo')
       return;
     }
+    try {
+    const channel = message.guild.channels.cache.get(message.mentions.channels.first().id)
+    channel.send('a').then(msg => {
+      msg.delete()
+    })
+    }catch(error) {
+      message.channel.send('Channel is not in this guild, don\'t try to break me.')
+      return;
+    }
     var text = args.join(' ');
     var text = text.replace(argarray[1], '')
 		message.delete()

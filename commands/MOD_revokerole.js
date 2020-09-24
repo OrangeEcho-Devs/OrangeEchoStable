@@ -8,8 +8,23 @@ module.exports = {
 	execute(message, args, client) {
    try{
      if(message.mentions.members.size == 0){
-       respond('Error', 'Please mention a user.', message.channel);
-       return;
+      const Discord = require('discord.js');
+      const rolename = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg)).join(' ')
+      const role = message.guild.roles.cache.find(role => role.name === rolename);
+      const member = message.guild.members.cache.get(args[0])
+      const user = args[0]
+      if(rolename == ''){
+        respond('Error', 'Please provide a role name.', message.channel);
+        return;
+       }else{}
+      try{
+        member.roles.remove([role]).then(
+          respond('✅ Role revoked', `<@${user}> had the \`${rolename}\` role revoked.`, message.channel)
+          )
+      }catch(error){
+      respond('Error', 'Something went wrong.\n'+error, message.channel)
+      return;
+      }
       }else{}
     const Discord = require('discord.js');
     const rolename = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg)).join(' ')

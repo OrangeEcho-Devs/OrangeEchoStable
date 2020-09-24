@@ -20,63 +20,6 @@ http.createServer(function (req, res) {
 }).listen(8080);
 
 //End
-//Updating the status page
-var http = require('http');
- 
-// The following 4 are the actual values that pertain to your account and this specific metric.
-var apiKey = 'e5ca09c8-6e44-4b39-8d1a-554b56909c46';
-var pageId = 'jbhgnn8qfz55';
-var metricId = '09gd2klvgsy8';
-var apiBase = 'http://api.statuspage.io/v1';
- 
-var url = apiBase + '/pages/' + pageId + '/metrics/' + metricId + '/data.json';
-var authHeader = { 'Authorization': 'OAuth ' + apiKey };
-var options = { method: 'POST', headers: authHeader };
- 
-// Need at least 1 data point for every 5 minutes.
-// Submit random data for the whole day.
-var totalPoints = 60 / 5 * 24;
-var epochInSeconds = Math.floor(new Date() / 1000);
- 
-// This function gets called every second.
-function submit(count) {
-  count = count + 1;
- 
-  if(count > totalPoints) return;
- 
-  var currentTimestamp = epochInSeconds - (count - 1) * 5 * 60;
-  var randomValue = Math.floor(Math.random() * 1000);
- 
-  var data = {
-    timestamp: currentTimestamp,
-    value: randomValue,
-  };
- 
-  var request = http.request(url, options, function (res) {
-    if (res.statusMessage === "Unauthorized") {
-      const genericError =
-        "Error encountered. Please ensure that your page code and authorization key are correct.";
-      return console.error(genericError);
-    }
-    res.on("data", function () {
-      console.log("Submitted point " + count + " of " + totalPoints);
-    });
-    res.on("end", function () {
-      setTimeout(function () {
-        submit(count);
-      }, 1000);
-    });
-    res.on("error", (error) => {
-      console.error(`Error caught: ${error.message}`);
-    });
-  });
- 
-  request.end(JSON.stringify({ data: data }));
-}
- 
-// Initial call to start submitting data.
-submit(0);
-//End of status page
 const keep_alive = require('./keep_alive.js')
 const token = 'N o  t o k e n  f o r  y o u'
 console.log('The bot is currently booting up. Please wait a moment.')
@@ -114,7 +57,7 @@ const {
 	MessageEmbed
 } = require('discord.js')
 
-version = '7.0.2'
+version = '7.0.3'
 codename = 'Stable'
 errorcount = 0
 var safemode = false
@@ -220,6 +163,29 @@ if (fs.existsSync(`./strings.json`)){
 		}
 
 }
+//Check for updates
+client.once('ready', () => {
+	const https = require('https');
+	const fetch = require('node-fetch')
+	fetch('https://api.github.com/repos/OrangeEcho-Devs/OrangeEchoStable/releases/latest').then(response => response.json()).then(data => {
+		const latestversion = data.tag_name.toLocaleString()
+		const body = data.body.toLocaleString()
+		const changelog = body.replace('✔️ Signed', '') || body.replace('❌ Unsigned', '')
+		if(body.includes('✔️ Signed') || body.includes('✅ Signed')) signedstatus = '✅ Signed'
+		if(body.includes('❌ Unsigned')) signedstatus = '❌ Unsigned'
+						 if(version != latestversion){
+						const UpdateAvailableEmbed = new Discord.MessageEmbed()
+						.setTitle('Update Available')
+						.setColor('ffa500')
+						.setDescription(`An update is available.\nYour version: ${version}\nLatest version: ${latestversion}`)
+						.addField('Signed Status', signedstatus, false)
+						.addField('Changelog',changelog,false)
+						.setFooter('An update is available \nbotOS '+version+' -> botOS '+latestversion)
+						const {BotLog} = require('./config.json')
+						client.channels.cache.get(BotLog).send(UpdateAvailableEmbed);
+						}
+					})
+				})
 //Modmail start
 //Makes required files if not found
 client.on('ready', () => {
@@ -1006,8 +972,6 @@ client.on('message', async message => {
 		return;
 	}
 	if(command.botmanager == true && message.member.roles.cache.some(role => role.id === `${BotManagerRoleID}`)){
-		if(message.content.startsWith(PREFIX+'')) return;
-		if(message.content.startsWith(PREFIX+' ')) return;
 		command.execute(message, args, client);
 		return;
 	}
@@ -1479,6 +1443,9 @@ client.on('message', message => {
 client.on('messageUpdate', (oldMessage, newMessage) => {
 	if(safemode == true)return;
 	if (oldMessage.author.bot)return;
+	const old = oldMessage.toString()
+	const newmsg = newMessage.toString()
+	if(old == newmsg) return;
   if(oldMessage == newMessage) return;
 	var today = new Date();
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();

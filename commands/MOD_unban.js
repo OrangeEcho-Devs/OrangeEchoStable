@@ -31,10 +31,11 @@ module.exports = {
 			fs.appendFileSync('./logs/' + userID + '-modwarnings.log', 'Unban issued by '+ message.author.tag +'\nReason: ' + reason +'\n\n');
 			   
 			respond('Unban',userID+' was unbanned.\nReason: '+reason, message.channel)
+			message.channel.send(':warning: This is pretty buggy, please double check that the user has been unbanned correctly. The bot may not throw an error if unsuccessful.')
 	const ModReportEmbed = new Discord.MessageEmbed()
 		ModReportEmbed.setColor('#10C891')
-		ModReportEmbed.setTitle('Warn')
-		ModReportEmbed.setDescription(`Warns a user`)
+		ModReportEmbed.setTitle('Unban')
+		ModReportEmbed.setDescription(`Unbans a user`)
 		ModReportEmbed.addFields(
 			{ name: 'Offender', value: `${checkmemberforroles}`, inline: false },
 			{ name: 'Responsible Moderator', value: `${message.author.tag}`, inline: false },

@@ -7,6 +7,7 @@ module.exports = {
 	async execute (message, args, client) {
         const Discord = require('discord.js')
         const db = require('quick.db')
+        console.log('executed')
         const embed = new Discord.MessageEmbed()
             .setTitle('Activation status')
         client.guilds.cache.forEach(guild => {

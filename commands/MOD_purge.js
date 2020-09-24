@@ -9,7 +9,7 @@ module.exports = {
     execute(message, args, client) {
 		const { StaffRoleID, BotLog , CrashNotify } = require('../config.json');
       const db = require('quick.db')
-      const {ModLog} = db.fetch(`ModlogID_${message.guild.id}`)
+      const ModLog = db.fetch(`ModlogID_${message.guild.id}`)
         try {
 			const { prefix } = require('../config.json');
 			const argarray = message.content.slice(prefix.length).trim().split(/ +/g);

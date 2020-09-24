@@ -21,20 +21,24 @@ module.exports = {
 				respond('',`Are you REALLY gonna try and preban **YOURSELF**`, message.channel);
 				return;
 			}
-			const {ModeratorRoleID} = db.fetch(`ModeratorRoleID_${message.guild.id}`)
+			const ModeratorRoleID = db.fetch(`ModeratorRoleID_${message.guild.id}`)
 			if(message.guild.members.cache.get(idToBan)){
 				const checkmemberforroles = message.guild.members.cache.get(idToBan)
 
-			if (checkmemberforroles.roles.cache.some(role => role.id === `${ModeratorRoleID}`)){
-				respond('',`You can't perform that action on this user.`, message.channel);
-				return;
-			}
+			if(checkmemberforroles.roles.has(ModeratorRoleID)) return message.channel.send('Hey hey hey, no prebanning of mods my dear')
 			}
 			
 
-			fs.readFile(`./logs/SVRBAN_${message.guild.id}idbanlist.txt`, function(err, data){
-				if(err)console.log(err);
-				if(data.toString().includes(idToBan)){
+			fs.readFile(`./logs/SVRBAN_${message.guild.name}-${message.guild.id}idbanlist.txt`, function(err, data){
+				if(err) fs.writeFile(`./logs/SVRBAN_${message.guild.name}-${message.guild.id}idbanlist.txt`, '', function(err) {
+					if(err) console.log(err)
+				})
+				if(!data) {
+					fs.writeFile(`./logs/SVRBAN_${message.guild.name}-${message.guild.id}idbanlist.txt`, '', function(err) {
+					if(err) console.log(err)
+					})
+				}
+				if(data.includes(idToBan)){
 					respond('Error', 'User is already on the pre-ban list. What are you doing??', message.channel)
 					return;
 				}else{
@@ -75,6 +79,7 @@ module.exports = {
         	}catch(error) {
 				respond('Error', 'Something went wrong.\n'+error+`\nMessage: ${message}\nArgs: ${args}\n`, message.channel)
 				errorlog(error)
+				message.channel.send('This is most likely an error with the Discord hierachy system, please try moving my role up to the top above the rest')
 				// Your code broke (Leave untouched in most cases)
 				console.error('an error has occured', error);
 				}

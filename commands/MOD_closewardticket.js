@@ -69,7 +69,7 @@ module.exports = {
           message.channel.send('✅ Ticket closed successfully.')
         }
         if(whichward == 'Consultation') {
-          member.roles.remove(consultation)
+          member.roles.remove(outpatient)
           db.set(`STATUSTicket${ticketnumber}`, 'CLOSED')
           message.channel.send('✅ Ticket closed successfully.')
         }

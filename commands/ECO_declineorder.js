@@ -8,6 +8,8 @@ module.exports = {
     hidden:true,
       async execute(message, args, client) {
         const Discord = require('discord.js');
+        const allowedrole = message.guild.roles.cache.get('713693636058939433')
+        if(!message.member.roles.cache.has(allowedrole)) return message.react('❌')
         const db = require('quick.db');
         const ordernumbertoclaim = args[0]
         if(!args[0]) return message.channel.send('Please specify an order number to decline the order.')

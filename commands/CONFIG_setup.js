@@ -61,7 +61,7 @@ module.exports = {
         .setDescription("Done! We have finished setting up the bot. Have fun!")
       message.channel.send(step1embed);
       message.channel.awaitMessages(m => m.author.id == message.author.id,
-                            {max: 1, time: 30000}).then(collected => {
+                            {max: 1, time: 60000}).then(collected => {
         if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
           if (collected.first().content.toLowerCase() == 'exit') {
             return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
@@ -75,7 +75,7 @@ module.exports = {
           "Sweet! Now, please enter the role ID meant for the default member. If you don't have one, simply copy the ID of the everyone role. \nPlease enter the member role ID or type `exit` anytime to cancel the setup."
         );
         message.channel.send(step2embed).then(message.channel.awaitMessages(m => m.author.id == message.author.id,
-                                   {max: 1, time: 30000}).then(collected => {
+                                   {max: 1, time: 60000}).then(collected => {
           if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
             if (collected.first().content.toLowerCase() == 'exit') {
               return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
@@ -85,7 +85,7 @@ module.exports = {
             var responsestep2 = collected.first().content.toLowerCase()
             db.set(`MemberRoleID_${message.guild.id}`, responsestep2)
             message.channel.send(step3embed).then(message.channel.awaitMessages(m => m.author.id == message.author.id,
-                                   {max: 1, time: 30000}).then(collected => {
+                                   {max: 1, time: 60000}).then(collected => {
               if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
                 if (collected.first().content.toLowerCase() == 'exit') {
                   return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
@@ -95,7 +95,7 @@ module.exports = {
                 var responsestep3 = collected.first().content.toLowerCase()
                 db.set(`MuteRoleID_${message.guild.id}`, responsestep3)
             message.channel.send(step4embed).then(message.channel.awaitMessages(m => m.author.id == message.author.id,
-                                   {max: 1, time: 30000}).then(collected => {
+                                   {max: 1, time: 60000}).then(collected => {
               if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
                 if (collected.first().content.toLowerCase() == 'exit') {
                   return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
@@ -105,7 +105,7 @@ module.exports = {
                 var responsestep4 = collected.first().content.toLowerCase()
                 db.set(`ModlogID_${message.guild.id}`, responsestep4)
             message.channel.send(step5embed).then(message.channel.awaitMessages(m => m.author.id == message.author.id,
-                                   {max: 1, time: 30000}).then(collected => {
+                                   {max: 1, time: 60000}).then(collected => {
               if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
                 if (collected.first().content.toLowerCase() == 'exit') {
                   return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
@@ -115,7 +115,7 @@ module.exports = {
                 var responsestep5 = collected.first().content.toLowerCase()
                 db.set(`MessageLogID_${message.guild.id}`, responsestep5)
                 message.channel.send(step6embed).then(message.channel.awaitMessages(m => m.author.id == message.author.id,
-                                   {max: 1, time: 30000}).then(collected => {
+                                   {max: 1, time: 60000}).then(collected => {
                   if (collected.first().content.toLowerCase() == collected.first().content.toLowerCase()) {
                     if (collected.first().content.toLowerCase() == 'exit') {
                       return message.channel.send('Operation cancelled. \nOnce you are ready, please restart the setup as the setup is very important in order to properly customise this bot for your server.')
