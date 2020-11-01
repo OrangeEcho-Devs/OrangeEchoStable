@@ -57,7 +57,7 @@ const {
 	MessageEmbed
 } = require('discord.js')
 
-version = '7.0.3'
+version = '7B update 4'
 codename = 'Stable'
 errorcount = 0
 var safemode = false
