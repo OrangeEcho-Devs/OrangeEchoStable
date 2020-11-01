@@ -9,7 +9,6 @@ module.exports = {
    try{
      if(message.mentions.members.size == 0){
        const user = args
-       if(!args) return message.channel.send('Please specify a user (by ID or mentions)')
       const Discord = require('discord.js');
       const rolename = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg)).join(' ')
       const role = message.guild.roles.cache.find(role => role.name === rolename);

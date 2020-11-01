@@ -10,7 +10,7 @@ module.exports = {
     const Discord = require('discord.js');
     const fs = require('fs');
     const prefix = '*'
-    const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+    const argarray = args
     const db = require('quick.db')
     try {
       if(!message.mentions.members.first()) {
@@ -31,8 +31,8 @@ module.exports = {
       if(reason == ''){var reason = 'No reason provided.'}
       
       //Writes reason to files
-      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nReason: ' + reason +'\n\n');
-      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername}: \nReason: ${reason}\n\n`);
+      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
       
       //Notifies of the warn
       respond('⚠️',mentionedmember + ' had a warning logged.\nReason: '+reason, message.channel)
@@ -75,8 +75,8 @@ module.exports = {
       if(reason == ''){var reason = 'No reason provided.'}
       
       //Writes reason to files
-      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nReason: ' + reason +'\n\n');
-      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername}: \nReason: ${reason}\n\n`);
+      fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Warning\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Warning issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
       
       //Notifies of the warn
       respond('⚠️',mentionedmember + ' had a warning logged.\nReason: '+reason, message.channel)

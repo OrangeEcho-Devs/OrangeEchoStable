@@ -8,7 +8,7 @@ module.exports = {
   nodelay:true,
 	execute(message, args, client) {
     const { prefix } = require('../config.json');
-    const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+    const argarray = args
 
 		if(!message.mentions.channels.first()){
       respond('Error', 'Please mention a channel.', message.channel);

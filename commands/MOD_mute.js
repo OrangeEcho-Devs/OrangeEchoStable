@@ -15,7 +15,7 @@ module.exports = {
       const prefix = '*'
       if(!message.mentions.members.first()) {
         const user = args[0]
-        const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+        const argarray = args
         if (message.author.id == user){respond('',`Are you REALLY gonna try and mute **YOURSELF**`, message.channel);return;}
       const ModeratorRoleID = db.fetch(`ModeratorRoleID_${message.guild.id}`)
       const checkmemberforroles = message.guild.members.cache.get(user)
@@ -34,8 +34,8 @@ module.exports = {
     }
      respond('🔇 Muted',`You were muted due to:\n ${reason}`, member)
      respond('🔇 Muted',mentionedmember+` was muted. \nReason: ${reason}`, message.channel);
-      fs.appendFileSync('./logs/' + taggeduser + '-warnings.log', 'Mute\nReason: ' + reason +'\n\n');
-      fs.appendFileSync('./logs/' + taggeduser + '-modwarnings.log', 'Mute issued by '+ message.author.tag +'\nReason: ' + reason +'\n\n');
+     fs.appendFileSync('./logs/' + taggeduser + '-warnings.log', 'Mute\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+     fs.appendFileSync('./logs/' + taggeduser + '-modwarnings.log',`Mute issued by ${message.author.tag} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
 	const ModReportEmbed = new Discord.MessageEmbed()
 		ModReportEmbed.setColor('#FF4500')
 		ModReportEmbed.setTitle('Mute')
@@ -73,8 +73,8 @@ module.exports = {
     }
      respond('🔇 Muted',`You were muted due to:\n ${reason}`, member)
      respond('🔇 Muted',mentionedmember+' was muted.', message.channel);
-      fs.appendFileSync('./logs/' + taggeduser + '-warnings.log', 'Mute\nReason: ' + reason +'\n\n');
-      fs.appendFileSync('./logs/' + taggeduser + '-modwarnings.log', 'Mute issued by '+ message.author.tag +'\nReason: ' + reason +'\n\n');
+     fs.appendFileSync('./logs/' + taggeduser + '-warnings.log', 'Mute\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+     fs.appendFileSync('./logs/' + taggeduser + '-modwarnings.log',`Mute issued by ${message.author.tag} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
 	const ModReportEmbed = new Discord.MessageEmbed()
 		ModReportEmbed.setColor('#FF4500')
 		ModReportEmbed.setTitle('Mute')

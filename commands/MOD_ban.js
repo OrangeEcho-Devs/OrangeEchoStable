@@ -21,15 +21,15 @@ module.exports = {
 			const userid = user
 			const guild = message.guild
       		const PREFIX = '*'
-      		const argarray = message.content.slice(PREFIX.length).trim().split(/ +/g);
+      		const argarray = args
 			const authorusername = message.author.username +'#' +message.author.discriminator
       		const Discord = require('discord.js')
 			let reasonraw = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
 			var reason = reasonraw.join(' ')
 			var reason = reason.replace(argarray[1], '')
 			if(reason == ''){var reason = 'No reason provided.'}
-			fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Ban\nReason: ' + reason +'\n\n');
-   			fs.appendFileSync('./logs/' + userid + '-modwarnings.log', 'Ban issued by '+ authorusername +'\nReason: ' + reason +'\n\n');
+			fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Ban\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+      fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Ban issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
 			respond('<:banhammer:713690855818657852> Ban','<@'+userid+'> was banned.\nReason: '+reason, message.channel)
 			message.channel.send('Banned. No more idiots fooling around in the server.')
 			message.channel.send('https://imgur.com/gallery/O3DHIA5')
@@ -63,15 +63,15 @@ module.exports = {
 			const userid = message.mentions.members.first().id
 			const guild = message.guild
       		const PREFIX = '*'
-      		const argarray = message.content.slice(PREFIX.length).trim().split(/ +/g);
+      		const argarray = args
 			const authorusername = message.author.username +'#' +message.author.discriminator
       		const Discord = require('discord.js')
 			let reasonraw = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
 			var reason = reasonraw.join(' ')
 			var reason = reason.replace(argarray[1], '')
 			if(reason == ''){var reason = 'No reason provided.'}
-			fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Ban\nReason: ' + reason +'\n\n');
-   			fs.appendFileSync('./logs/' + userid + '-modwarnings.log', 'Ban issued by '+ authorusername +'\nReason: ' + reason +'\n\n');
+			fs.appendFileSync('./logs/' + userid + '-warnings.log', 'Ban\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + reason +'\n\n');
+      		fs.appendFileSync('./logs/' + userid + '-modwarnings.log',`Ban issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${reason}\n\n`);
 			respond('<:banhammer:713690855818657852> Ban','<@'+userid+'> was banned.\nReason: '+reason, message.channel)
 			message.channel.send('Banned. No more idiots fooling around in the server.')
 			message.channel.send('https://imgur.com/gallery/O3DHIA5')

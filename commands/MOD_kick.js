@@ -10,7 +10,7 @@ module.exports = {
 	execute(message, args, client) {
     const Discord = require('discord.js')
     const fs = require('fs')
-		const argarray = message.content.slice(prefix.length).trim().split(/ +/g);
+		const argarray = args
     const db = require('quick.db')
 		try {
 			if(!message.mentions.members.first()) {
@@ -27,8 +27,8 @@ module.exports = {
 			var reason = reason.replace(argarray[1], '')
 			const auditreason = reason.replace(argarray[1], '')
 			if(reason == ''){var reason = 'No reason provided.'}
-			fs.appendFileSync('./logs/' + user.id + '-warnings.log', 'Kick\nReason: ' + auditreason +'\n\n');
-			fs.appendFileSync('./logs/' + user.id + '-modwarnings.log', 'Kick issued by '+ message.author.tag +'\nReason: ' + auditreason +'\n\n');
+			fs.appendFileSync('./logs/' + user.id + '-warnings.log', 'Kick\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + auditreason +'\n\n');
+      		fs.appendFileSync('./logs/' + user.id + '-modwarnings.log',`Kick issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${auditreason}\n\n`);
 			respond('⬅️ Kick','<@'+user.id+'> was kicked from the server. Goodbye and good riddance!\nReason: '+auditreason, message.channel)
 			channel.send(':wave: Goodbye and good riddance!');
 			respond('⬅️ Kick','You have been kicked from the server. You may rejoin at anytime.\n\nReason for kick: '+auditreason, client.users.cache.get(user))
@@ -63,8 +63,8 @@ module.exports = {
 			var reason = reason.replace(argarray[1], '')
 			const auditreason = reason.replace(argarray[1], '')
 			if(reason == ''){var reason = 'No reason provided.'}
-			fs.appendFileSync('./logs/' + user + '-warnings.log', 'Kick\nReason: ' + auditreason +'\n\n');
-			fs.appendFileSync('./logs/' + user + '-modwarnings.log', 'Kick issued by '+ message.author.tag +'\nReason: ' + auditreason +'\n\n');
+			fs.appendFileSync('./logs/' + user + '-warnings.log', 'Kick\nServer: '+message.guild.name+' ('+message.guild.id+')\nReason: ' + auditreason +'\n\n');
+      		fs.appendFileSync('./logs/' + user + '-modwarnings.log',`Kick issued by ${authorusername} in ${message.guild.name} (${message.guild.id}) \nReason: ${auditreason}\n\n`);
 			respond('⬅️ Kick','<@'+user+'> was kicked from the server. Goodbye and good riddance!\nReason: '+auditreason, message.channel)
 			channel.send(':wave: Goodbye and good riddance!');
 			respond('⬅️ Kick','You have been kicked from the server. You may rejoin at anytime.\n\nReason for kick: '+auditreason, user)
